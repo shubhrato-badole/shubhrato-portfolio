@@ -18,7 +18,8 @@ return(
         01 / About
     </div>
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-     <div className= "flex-1 felx-col">
+     <div className= "flex-1 felx-col" 
+     >
      <h2 className="font-['Syne'] font-bold text-white mb-6 
       " style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.1 }}>Hey {visitorName}, <br /> 
     <span className="text-primary bg-gradient-to-r 
@@ -91,39 +92,4 @@ export default About;
 
 
 
-  {/* <div className="rounded-2xl overflow-hidden border border-violet-500/20"
-          style={{ background: '#0a0118', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
-
-          {/* Window chrome */}
-          {/* <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]"
-            style={{ background: 'rgba(255,255,255,0.03)' }}>
-            <span className="w-3 h-3 rounded-full bg-[#FF5F57]" />
-            <span className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-            <span className="w-3 h-3 rounded-full bg-[#28CA41]" />
-            <span className="font-mono text-[11px] text-slate-600 ml-auto">developer.ts</span>
-          </div>
-
-          {/* Code lines */}
-          {/* <div className="p-6 font-mono text-sm leading-7">
-            {[
-              ['#E2E8F0', 'const developer = {'],
-              ['#A78BFA', '  name: "Shubhrato Badole",'],
-              ['#A78BFA', '  role: "Full Stack Dev",'],
-              ['#E2E8F0', '  loves: ['],
-              ['#34D399', '    "TypeScript", "React",'],
-              ['#34D399', '    "Clean Code", "UX",'],
-              ['#E2E8F0', '  ],'],
-              ['#F59E0B', '  isAvailable: true,'],
-              ['#06B6D4', '  solve: (p) => ☕ + code'],
-              ['#E2E8F0', '}'],
-            ].map(([color, text], i) => (
-              <div key={i} className="flex gap-4">
-                <span className="text-slate-700 text-[11px] w-4 text-right select-none">
-                  {i + 1}
-                </span>
-                <span style={{ color }}>{text}</span>
-              </div>
-            ))}
-          </div>
-
-        </div> */} 
+  

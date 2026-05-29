@@ -57,7 +57,9 @@ function Hero () {
         </div>
 
         <h1 className="font-['Syne'] font-bold leading-none mb-5"
-          style={{ fontSize: 'clamp(3rem, 9vw, 6.5rem)' }}>
+          style={{ fontSize: 'clamp(3rem, 9vw, 6.5rem)' ,  transitionProperty: 'all',
+  transitionDuration: '700ms',
+  transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)'}}>
           <span className="text-white">SHUBHRATO </span>
           <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
             BADOLE
@@ -66,7 +68,7 @@ function Hero () {
 
         <div className="font-['Syne'] font-bold text-[clamp(1.8rem,5vw,1.5rem)] mb-8 h-8  text-slate-300 transtion-all duration-300  tracking-wide">
            {text}
-            <span className="animate-pulse text-violet-400">|</span>
+         
         </div>
 
         <p className="text-slate-400 max-w-lg mx-auto mb-10 leading-relaxed text-[15px]">

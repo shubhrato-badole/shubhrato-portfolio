@@ -4,6 +4,7 @@ import Hero from './Hero/Hero'
 import  Navbar from './navbar/navbar'
 import About from './about/about'
 import Skills from "./Skills/skills"
+import Projects from "./Project/Project";
 
 export default function App() {
     const { hasEntered, setHasEntered, setVisitorName } = UseVisitor()
@@ -24,6 +25,7 @@ export default function App() {
       <Hero />
       <About />
       <Skills />
+      <Projects />
     </div>
   )
 }
