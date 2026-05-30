@@ -5,6 +5,9 @@ import  Navbar from './navbar/navbar'
 import About from './about/about'
 import Skills from "./Skills/skills"
 import Projects from "./Project/Project";
+import Contact from "./Contact/Contact"
+import Footer from "./Footer/Footer"
+
 
 export default function App() {
     const { hasEntered, setHasEntered, setVisitorName } = UseVisitor()
@@ -26,6 +29,8 @@ export default function App() {
       <About />
       <Skills />
       <Projects />
+      <Contact />
+     < Footer />
     </div>
   )
 }

@@ -15,7 +15,7 @@ const PROJECTS = [
     title: 'Project One',
     year: '2024',
     desc: 'Short description of what this project does and what problem it solves.',
-    tech: ['React', 'TypeScript', 'Node.js','React', 'TypeScript', 'Node.js'],
+    tech: ['React', 'TypeScript', 'Node.js'],
     github: 'https://github.com',
     live: 'https://example.com',
     color: '#8B5CF6',
