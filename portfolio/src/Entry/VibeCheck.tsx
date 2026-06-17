@@ -1,95 +1,249 @@
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react"
 
-   const SCAN_STEPS = [
-  "Scanning visitor...",
-  "Checking vibe... ✓",
-  "Measuring curiosity level... HIGH ✓",
-  "Detecting coffee dependency... CRITICAL ✓",
-  "Vibe check passed. Welcome aboard 🚀",
+const STEPS = [
+  { msg: "checking linkedin... last updated 3 years ago. bold strategy.",  },
+  { msg: 'googled "center a div" this week... we don\'t judge.',  },
+  { msg: "coffee intake: 4 cups before 9am. this is fine. this is fine.", },
+  { msg: "side projects found: 14. shipped: 0. respectable.", },
+  { msg: "vibe certified. welcome to the good side.", },
 ]
 
-interface VibeCheckProps {
-  name: string
-  onDone: () => void
-}
+interface Props { name: string; onDone: () => void }
 
-function VibeCheck({name , onDone}:VibeCheckProps){
-  const [steps ,setSteps ] = useState(0);
-  const [prog, setProg]   = useState(0)
-  const [rot,  setRot]    = useState(0)
+export default function VibeCheck({ name, onDone }: Props) {
+  const [current, setCurrent] = useState(0)
+  const [prog,    setProg]    = useState(0)
+  const [hired,   setHired]   = useState(false)
 
   useEffect(() => {
-     SCAN_STEPS.forEach((_,i) =>{
-     setTimeout(() => {
-        setSteps(i+1)
-     }, i*700 ) });
+    STEPS.forEach((_, i) => {
+      setTimeout(() => setCurrent(i + 1), 800 + i * 1300)
+    })
 
-    const total = 3600
-    let elapsed = 0;
-  const bar =   setInterval(()=>{
-    elapsed += 30 
-    setProg(Math.min(100 , Math.round((elapsed / total)*100))) 
-    if(elapsed >= total){
-        clearInterval(bar);
-        setTimeout(onDone, 300)
-    }
-  }, 30)
+    const total = 800 + STEPS.length * 1200 + 600
+    let elapsed = 0
+    const bar = setInterval(() => {
+      elapsed += 30
+      setProg(Math.min(100, Math.round((elapsed / total) * 100)))
+      if (elapsed >= total) {
+        clearInterval(bar)
+        setHired(true)
+        setTimeout(onDone, 4000)
+      }
+    }, 30)
 
-const spin = setInterval(() => {
-    setRot(r => r + 4)
-}, 16);
-
-return () => {
-      clearInterval(bar)
-      clearInterval(spin)
-    }
-
-
+    return () => clearInterval(bar)
   }, [])
 
+  return (
+    <div
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{ background: "#04010f" }}
+    >
+    
+      <div
+        className="absolute rounded-full pointer-events-none"
+        style={{
+          width: 400, height: 400,
+          top: "50%", left: "50%",
+          transform: "translate(-50%, -50%)",
+          background: hired
+            ? "radial-gradient(circle, rgba(74,222,128,0.08) 0%, transparent 70%)"
+            : "radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)",
+          transition: "background 1.5s",
+        }}
+      />
 
-return(
-    <div className="min-h-screen bg-[#030010] flex items-center justify-center relative overflow-hidden">
-       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
-        <div className="relative z-10 text-center px-6 max-w-md w-full">
-        <div className=" w-16 h-16 rounded-full bg-gradient-to-br from-violet-700 to-violet-500 mx-auto mb-6 flex items-center justify-center text-2xl shadow-[0_0_30px_rgba(139,92,246,0.4)]"
-        style={{ transform: `rotate(${rot}deg)` }}>
-                      ⚡
+      
+      <div
+        className="relative z-10 w-full"
+        style={{
+          maxWidth: 460,
+          background: "rgba(255,255,255,0.02)",
+          border: hired
+            ? "1px solid rgba(74,222,128,0.2)"
+            : "1px solid rgba(139,92,246,0.2)",
+          borderRadius: 20,
+          padding: "32px 28px",
+          backdropFilter: "blur(10px)",
+          transition: "border-color 1.5s",
+        }}
+      >
+        
+        <div
+          style={{
+            fontFamily: "monospace",
+            fontSize: 10,
+            letterSpacing: "0.25em",
+            color: "#334155",
+            textTransform: "uppercase",
+            marginBottom: 24,
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <span>shubhrato corp™</span>
+          <span style={{ color: hired ? "#4ADE80" : "#8B5CF6" }}>
+            {hired ? "● approved" : "● scanning"}
+          </span>
         </div>
-           <div className="text-sm text-slate-500 font-mono tracking-[0.25em] uppercase mb-3">VIBE CHECK</div>
-           <div className="font-['Syne'] font-bold text-[clamp(1.8rem,5vw,2.8rem)] mb-8 bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">{name}</div>
-         
-         
-         <div className="bg-white/[0.02] border border-violet-500/15 p-4 rounded-xl mb-6 text-left">
-            {SCAN_STEPS.map((s , i ) =>
-              <div key={i} className="flex items-center gap-3 py-[5px] font-mono text-[13px] transition-opacity duration-300">
-                <span
-                className="text-[15px] flex-shrink-0 transition-colors duration-300"
-                style={{ color: steps > i ? '#4ADE80' : '#334155' }}
+
+       
+        <div style={{ marginBottom: 28, textAlign: "center" }}>
+          <div
+            style={{
+              fontFamily: "monospace",
+              fontSize: 10,
+              color: "#334155",
+              letterSpacing: "0.2em",
+              marginBottom: 8,
+              textTransform: "uppercase",
+            }}
+          >
+            candidate
+          </div>
+          <div
+            style={{
+              fontFamily: "'Syne', sans-serif",
+              fontWeight: 800,
+              fontSize: "clamp(2rem, 8vw, 3.5rem)",
+              letterSpacing: "-1.5px",
+              lineHeight: 1,
+              background: hired
+                ? "linear-gradient(135deg, #4ade80, #86efac)"
+                : "linear-gradient(135deg, #ffffff 30%, #a78bfa)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              transition: "all 1.5s",
+            }}
+          >
+            {name.toUpperCase()}
+          </div>
+        </div>
+
+       
+        <div
+          style={{
+            height: 1,
+            background: "rgba(255,255,255,0.05)",
+            marginBottom: 24,
+          }}
+        />
+
+      
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
+          {STEPS.map((step, i) => {
+            const done    = current > i + 1
+            const active  = current === i + 1
+            const pending = current <= i
+            return (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: 10,
+                  opacity: pending ? 0.1 : 1,
+                  transition: "opacity 0.5s",
+                }}
               >
-                  {steps > i ? '✓' : '○'}
-                 </span>
-                <span style={{ color: steps > i ? '#94A3B8' : '#334155' }}>
-                {s}
-              </span>
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: 14,
+                    flexShrink: 0,
+                    marginTop: 1,
+                    color: done ? "#4ADE80" : active ? "#A78BFA" : "#334155",
+                    transition: "color 0.5s",
+                  }}
+                >
+                  {done ? "✓" : active ? "◎" : "○"}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: 13,
+                    lineHeight: 1.6,
+                    color: done ? "#475569" : active ? "#E2E8F0" : "#1a1a2e",
+                    transition: "color 0.5s",
+                  }}
+                >
+                  {step.emoji} {step.msg}
+                </span>
               </div>
-            )}
-         </div>
-  
+            )
+          })}
+        </div>
 
-         <div className="h-1 bg-white/[0.06] rounded-full overflow-hidden mb-2">
-            <div className="h-full bg-gradient-to-r from-violet-500 to-cyan-400 rounded-full transition-all duration-[30ms]"
-            style={{width:`${prog}%`}} />
-            </div>
-                 <div className="font-mono text-[11px] text-slate-700">{prog}%  
-             </div>
-               </div>
+        <div
+          style={{
+            height: 2,
+            background: "rgba(255,255,255,0.05)",
+            borderRadius: 99,
+            overflow: "hidden",
+            marginBottom: 10,
+          }}
+        >
+          <div
+            style={{
+              height: "100%",
+              width: `${prog}%`,
+              borderRadius: 99,
+              background: hired
+                ? "linear-gradient(90deg, #4ade80, #86efac)"
+                : "linear-gradient(90deg, #8B5CF6, #06B6D4)",
+              transition: "width 0.03s linear, background 1.5s",
+            }}
+          />
+        </div>
+
+     
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            fontFamily: "monospace",
+            fontSize: 10,
+            color: "#334155",
+          }}
+        >
+          <span>{hired ? "✓ cleared" : `${prog}% · please hold`}</span>
+        </div>
+
+       
+        <div
+          style={{
+            overflow: "hidden",
+            maxHeight: hired ? 80 : 0,
+            opacity: hired ? 1 : 0,
+            transition: "all 1s ease",
+            marginTop: hired ? 20 : 0,
+            textAlign: "center",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "'Syne', sans-serif",
+              fontWeight: 700,
+              fontSize: 18,
+              color: "#4ADE80",
+              letterSpacing: "0.05em",
+              marginBottom: 6,
+            }}
+          >
+            CANDIDATE HIRED ✓
+          </div>
+          <div
+            style={{
+              fontFamily: "monospace",
+              fontSize: 11,
+              color: "#334155",
+            }}
+          >
+            hr will not be in touch. they never are.
+          </div>
+        </div>
+      </div>
     </div>
-
-)
-
-
-
+  )
 }
-
-export default VibeCheck
