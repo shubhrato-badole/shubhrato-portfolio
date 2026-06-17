@@ -28,7 +28,7 @@ export default function VibeCheck({ name, onDone }: Props) {
       if (elapsed >= total) {
         clearInterval(bar)
         setHired(true)
-        setTimeout(onDone, 3500)
+        setTimeout(onDone, 3100)
       }
     }, 30)
 
@@ -106,7 +106,7 @@ export default function VibeCheck({ name, onDone }: Props) {
             style={{
               fontFamily: "'Syne', sans-serif",
               fontWeight: 800,
-              fontSize: "clamp(2rem, 8vw, 3.5rem)",
+              fontSize: "clamp(2rem, 8vw, 2rem)",
               letterSpacing: "-1.5px",
               lineHeight: 1,
               background: hired
