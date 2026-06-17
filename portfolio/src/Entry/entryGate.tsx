@@ -1,7 +1,10 @@
 import { useState , useEffect , useRef } from "react";
 import VibeCheck from './VibeCheck'
 
-function EntryGate({onDone}) {
+type EntryGateProps = {
+  onDone: (name: string) => void;
+}; 
+function EntryGate({onDone}:EntryGateProps) {
 const [phase, setPhase] = useState("typing");
 const [showInput, setShowInput] = useState(false)
 const [val, setVal] = useState("");

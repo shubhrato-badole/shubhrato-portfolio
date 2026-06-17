@@ -1,18 +1,27 @@
-import { useState, FormEvent } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 import { motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
 import { UseVisitor } from "../context/VisitorContext";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 const socials = [
-  { label: "GitHub", href: "https://github.com/shubhrato-badole", icon: "⬡" },
+  {
+    label: "GitHub",
+    href: "https://github.com/shubhrato-badole",
+    icon: FaGithub,
+    color: "#ffffff",
+  },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/shubhrato-badole-5096381ba/",
-    icon: "◈",
+    icon: FaLinkedin,
+    color: "#0A66C2",
   },
 ];
+
 const inputClass = `w-full bg-transparent font-body text-white outline-none py-3 transition-colors placeholder:text-slate-700`
   const inputStyle = { borderBottom: '1px solid rgba(255,255,255,0.1)', fontSize: '15px' }
   const focusStyle = 'focus:border-primary'
@@ -61,7 +70,7 @@ const handleSubmit = async (e: FormEvent) => {
 
 
   return (
-    <section id="contatct" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="contact" className="max-w-6xl mx-auto px-6 py-24">
       <div className="font-['Syne'] text-slate-400 font-mono text-[12px] mb-4">
         {" "}
         04 / CONTACT
@@ -94,15 +103,20 @@ const handleSubmit = async (e: FormEvent) => {
 
           </div>
           <div className="flex gap-2">
-            {socials.map((s => 
-            <a key={s.label}
-            href={s.href} target="_blank" rel="noopener noreferrer"
-             className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 hover:text-white transition-all duration-200 hover:-translate-y-1"
-                  style={{ border: '1px solid rgba(255,255,255,0.08)' }}
-                  title={s.label}>
-             <span>{s.icon}</span>
-            </a>
-            ))}
+            {socials.map((social) => {
+  const Icon = social.icon;
+
+  return (
+    <a
+      key={social.label}
+      href={social.href}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <Icon size={24} color={social.color} />
+    </a>
+  );
+})}
           </div>
       </div>
       <div >
@@ -122,7 +136,7 @@ const handleSubmit = async (e: FormEvent) => {
                   Send another →
                 </button>
 
-        </motion.div>) : <form className="space-y-6" onSubmit={handleSubmit}>{['name', 'email', 'message'].map((f, i) =>
+        </motion.div>) : <form className="space-y-6" onSubmit={handleSubmit}>{(['name', 'email', 'message']as const).map((f, i) =>
         <div key={f}>
             <label  className="font-mono text-xs text-slate-600 tracking-widest block mb-2 uppercase">
                 {f}
