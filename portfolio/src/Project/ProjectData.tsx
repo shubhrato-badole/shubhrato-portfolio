@@ -12,34 +12,33 @@
 const PROJECTS = [
   {
     id: 1,
-    title: 'Project One',
-    year: '2024',
-    desc: 'Short description of what this project does and what problem it solves.',
-    tech: ['React', 'TypeScript', 'Node.js'],
-    github: 'https://github.com',
-    live: 'https://example.com',
+    title: 'JobFit — AI Job Matching Platform',
+    year: '2026',
+    desc: 'Full-stack AI platform that analyzes resumes against job descriptions, generates match scores, identifies missing skills, and provides personalized career guidance using Gemini AI.',
+    tech: ['React', 'Node.js', 'PostgreSQL', 'Redis', 'Docker', 'Gemini AI'],
+    github: 'https://github.com/shubhrato-badole/JobFit.git',
+    live: 'https://job-fit-murex.vercel.app',
     color: '#8B5CF6',
   },
   {
     id: 2,
-    title: 'Project Two',
-    year: '2024',
-    desc: 'Short description of what this project does and what problem it solves.',
-    tech: ['React', 'Tailwind', 'Firebase'],
-    github: 'https://github.com',
+    title: 'Spur AI Support Agent',
+    year: '2026',
+    desc: 'AI-powered customer support agent that answers questions about company policies using Gemini AI, with PostgreSQL persistence, Redis caching, and conversation history management.',
+    tech: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Redis', 'Gemini AI'],
+    github: 'https://github.com/shubhrato-badole/spur-chat',
+    live: 'https://spur-ai-support-agent-kappa.vercel.app',
     color: '#06B6D4',
   },
   {
     id: 3,
-    title: 'Project Three',
-    year: '2023',
-    desc: 'Short description of what this project does and what problem it solves.',
-    tech: ['Next.js', 'PostgreSQL', 'Prisma'],
-    github: 'https://github.com',
-    live: 'https://example.com',
+    title: 'SafeSpeak',
+    year: '2026',
+    desc: 'Anonymous harassment evidence collection platform that enables victims to securely record, encrypt, and report incidents while protecting their identity through panic mode and privacy-first features.',
+    tech: ['Flutter', 'Firebase', 'AES-256', 'SHA-256', 'PWA'],
+    github: 'https://github.com/shubhrato-badole/secureharbor-evidence-collector.git',
     color: '#F59E0B',
   },
-]
-
+];
 
 export default PROJECTS;

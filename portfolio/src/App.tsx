@@ -15,10 +15,12 @@ export default function App() {
    
   
   if(!hasEntered){
-    return (<EntryGate onDone={(name:string) => {
-        setVisitorName(name)
-        setHasEntered(true)
-      }}> </EntryGate>)
+    return (<EntryGate
+  onDone={(name: string) => {
+    setVisitorName(name);
+    setHasEntered(true);
+  }}
+/>)
   }
 
   return (
