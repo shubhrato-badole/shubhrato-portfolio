@@ -2,16 +2,23 @@ import {useState} from 'react';
 
 
 const SKILLS = [
-  { name: 'React',       icon: '⚛️',  level: 70, category: 'frontend', color: '#61DAFB' },
-  { name: 'TypeScript',  icon: '🔷',  level: 65, category: 'frontend', color: '#3178C6' },
-  { name: 'Next.js',     icon: '▲',   level: 60, category: 'frontend', color: '#ffffff' },
-  { name: 'Tailwind',    icon: '🎨',  level: 70, category: 'frontend', color: '#06B6D4' },
-  { name: 'Node.js',     icon: '🟢',  level: 60, category: 'backend',  color: '#339933' },
-  { name: 'Python',      icon: '🐍',  level: 55, category: 'backend',  color: '#3776AB' },
-  { name: 'PostgreSQL',  icon: '🐘',  level: 50, category: 'backend',  color: '#4169E1' },
-  { name: 'Docker',      icon: '🐳',  level: 45, category: 'tools',    color: '#2496ED' },
-  { name: 'Git',         icon: '📦',  level: 75, category: 'tools',    color: '#F05032' },
-
+  { name: 'React',        icon: '⚛️', level: 85, category: 'frontend', color: '#61DAFB' },
+  { name: 'TypeScript',   icon: '🔷', level: 80, category: 'frontend', color: '#3178C6' },
+  { name: 'JavaScript',   icon: '🟨', level: 85, category: 'frontend', color: '#F7DF1E' },
+  { name: 'Tailwind CSS', icon: '🎨', level: 80, category: 'frontend', color: '#06B6D4' },
+  { name: 'Node.js',      icon: '🟢', level: 80, category: 'backend', color: '#339933' },
+  { name: 'Express.js',   icon: '🚀', level: 75, category: 'backend', color: '#ffffff' },
+  { name: 'PostgreSQL',   icon: '🐘', level: 75, category: 'backend', color: '#336791' },
+  { name: 'Redis',        icon: '🔴', level: 70, category: 'backend', color: '#DC382D' },
+  { name: 'AI Integration', icon: '🤖', level: 75, category: 'backend', color: '#8B5CF6' },
+  { name: 'Docker',       icon: '🐳', level: 70, category: 'tools', color: '#2496ED' },
+  { name: 'Nginx', icon: '🌐', level: 65, category: 'tools', color: '#009639' },
+  { name: 'Git',          icon: '📦', level: 85, category: 'tools', color: '#F05032' },
+  { name: 'GitHub Actions', icon: '⚙️', level: 65, category: 'tools', color: '#2088FF' },
+  { name: 'AWS', icon: '☁️', level: 60, category: 'tools', color: '#FF9900' },
+  { name: 'Python',       icon: '🐍', level: 65, category: 'security', color: '#3776AB' },
+  { name: 'Cyber Security', icon: '🛡️', level: 75, category: 'security', color: '#8B5CF6' },
+  
 ];
 
  type Category = 'all' | 'frontend' | 'backend' | 'tools'
