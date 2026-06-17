@@ -18,24 +18,28 @@ function Hero () {
     const [deleting, setDeleting] = useState(false);
 
     useEffect(() => {
-       const currentText:string = ROLES[index];
-       const timeout = setTimeout(() => {
-        if(!deleting){
-          setText(currentText.slice(0, text.length + 1));
-          if(currentText === text){
-            setTimeout(() =>  setDeleting(true), 1000)
-          }
-        }else{
-            setText(text.slice(0,text.length-1))
+  const currentText = ROLES[index]
 
-            if(text === ""){
-            setDeleting(false)
-            setIndex((index + 1) % ROLES.length)
-            }
-          }
-    } , deleting ? 50 : 100)
-    return () => clearTimeout(timeout)
-  }, [text, deleting, index])
+  
+  if (!deleting && text === currentText) {
+    const pause = setTimeout(() => setDeleting(true), 1500)
+    return () => clearTimeout(pause)
+  }
+
+  const timeout = setTimeout(() => {
+    if (!deleting) {
+      setText(currentText.slice(0, text.length + 1))
+    } else {
+      setText(text.slice(0, text.length - 1))
+      if (text === '') {
+        setDeleting(false)
+        setIndex((index + 1) % ROLES.length)
+      }
+    }
+  }, deleting ? 40 : 85)
+
+  return () => clearTimeout(timeout)
+}, [text, deleting, index])
     
     return(
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
