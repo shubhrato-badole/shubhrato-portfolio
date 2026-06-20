@@ -20,16 +20,16 @@ const PROJECTS = [
     live: 'https://job-fit-murex.vercel.app',
     color: '#8B5CF6',
   },
-  {
-    id: 2,
-    title: 'Spur AI Support Agent',
-    year: '2026',
-    desc: 'AI-powered customer support agent that answers questions about company policies using Gemini AI, with PostgreSQL persistence, Redis caching, and conversation history management.',
-    tech: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Redis', 'Gemini AI'],
-    github: 'https://github.com/shubhrato-badole/spur-chat',
-    live: 'https://spur-ai-support-agent-kappa.vercel.app',
-    color: '#06B6D4',
-  },
+{
+  id: 2,
+  title: 'Spur — AI Support Agent',
+  year: '2026',
+  desc: 'Production RAG pipeline built from scratch — PDF parsing, Gemini embeddings, and pgvector semantic search via a Python FastAPI microservice, with Node.js handling business logic.',
+  tech: ['React', 'TypeScript', 'Python', 'FastAPI', 'PostgreSQL', 'pgvector', 'Gemini AI'],
+  github: 'https://github.com/shubhrato-badole/spur-chat',
+  live: 'https://spur-ai-support-agent-kappa.vercel.app',
+  color: '#06B6D4',
+},
   {
     id: 3,
     title: 'SafeSpeak',
@@ -39,6 +39,17 @@ const PROJECTS = [
     github: 'https://github.com/shubhrato-badole/secureharbor-evidence-collector.git',
     color: '#F59E0B',
   },
+
+  {
+  id: 4,
+  title: 'SecureVault API',
+  year: '2025',
+  desc: 'Secure full-stack notes and task management app with JWT authentication, bcrypt password hashing, and encrypted protected routes via middleware.',
+  tech: ['React', 'Node.js', 'Express', 'PostgreSQL', 'JWT', 'bcrypt'],
+  github: 'https://github.com/shubhrato-badole/securevault-api',
+  live: '',
+  color: '#10B981',
+},
 ];
 
 export default PROJECTS;

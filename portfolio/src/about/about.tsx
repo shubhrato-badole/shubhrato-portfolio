@@ -7,7 +7,7 @@ const {visitorName} = UseVisitor()
 const facts = [
   { icon: '🎓', label: 'Degree', value: 'B.Tech Computer Science' },
   { icon: '📍', label: 'Location', value: 'Nagpur, India' },
-  { icon: '🌱', label: 'Experience', value: 'Fresher' },
+  { icon: '🎯', label: 'Status', value: 'Open to Work' },
   { icon: '🚀', label: 'Projects', value: '4+ Built' },
 ]
 
@@ -63,10 +63,10 @@ return(
               ['#A78BFA', '  name: "Shubhrato Badole",'],
               ['#A78BFA', '  role: "Full Stack Dev",'],
               ['#E2E8F0', '  loves: ['],
-              ['#34D399', '    "TypeScript", "React",'],
-              ['#34D399', '    "Clean Code", "UX",'],
+              ['#34D399', '    "React", "TypeScript",'],
+              ['#34D399', '    "Node.js", "PostgreSQL",'],
               ['#E2E8F0', '  ],'],
-              ['#F59E0B', '  isAvailable: true,'],
+              ['#F59E0B', '  focus: "AI + Cybersecurity",'],
               ['#06B6D4', '  solve: (p) => ☕ + code'],
               ['#E2E8F0', '}'],
             ].map(([color, text ], i) => (

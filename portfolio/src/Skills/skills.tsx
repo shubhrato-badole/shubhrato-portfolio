@@ -6,22 +6,20 @@ const SKILLS = [
   { name: 'TypeScript',   icon: '🔷', level: 80, category: 'frontend', color: '#3178C6' },
   { name: 'JavaScript',   icon: '🟨', level: 85, category: 'frontend', color: '#F7DF1E' },
   { name: 'Tailwind CSS', icon: '🎨', level: 80, category: 'frontend', color: '#06B6D4' },
-  { name: 'Node.js',      icon: '🟢', level: 80, category: 'backend', color: '#339933' },
-  { name: 'Express.js',   icon: '🚀', level: 75, category: 'backend', color: '#ffffff' },
-  { name: 'PostgreSQL',   icon: '🐘', level: 75, category: 'backend', color: '#336791' },
-  { name: 'Redis',        icon: '🔴', level: 70, category: 'backend', color: '#DC382D' },
-  { name: 'AI Integration', icon: '🤖', level: 75, category: 'backend', color: '#8B5CF6' },
-  { name: 'Docker',       icon: '🐳', level: 70, category: 'tools', color: '#2496ED' },
+  { name: 'Node.js',      icon: '🟢', level: 80, category: 'backend',  color: '#339933' },
+  { name: 'PostgreSQL',   icon: '🐘', level: 75, category: 'backend',  color: '#336791' },
+  { name: 'Redis',        icon: '🔴', level: 70, category: 'backend',  color: '#DC382D' },
+  { name: 'Python',       icon: '🐍', level: 65, category: 'backend',  color: '#3776AB' },
+  { name: 'pgvector / RAG', icon: '🧠', level: 70, category: 'ai',     color: '#8B5CF6' },
+  { name: 'Gemini AI',    icon: '🤖', level: 75, category: 'ai',       color: '#4285F4' },
+  { name: 'LangChain',      icon: '🔗', level: 60, category: 'ai', color: '#169f9f' },
+  { name: 'Docker',       icon: '🐳', level: 70, category: 'tools',   color: '#2496ED' },
+  { name: 'Git',          icon: '📦', level: 85, category: 'tools',   color: '#F05032' },
   { name: 'Nginx', icon: '🌐', level: 65, category: 'tools', color: '#009639' },
-  { name: 'Git',          icon: '📦', level: 85, category: 'tools', color: '#F05032' },
-  { name: 'GitHub Actions', icon: '⚙️', level: 65, category: 'tools', color: '#2088FF' },
-  { name: 'AWS', icon: '☁️', level: 60, category: 'tools', color: '#FF9900' },
-  { name: 'Python',       icon: '🐍', level: 65, category: 'security', color: '#3776AB' },
-  { name: 'Cyber Security', icon: '🛡️', level: 75, category: 'security', color: '#8B5CF6' },
-  
-];
+  { name: 'AWS',          icon: '☁️', level: 60, category: 'tools',   color: '#FF9900' },
+]
 
- type Category = 'all' | 'frontend' | 'backend' | 'tools'
+ type Category = 'all' | 'frontend' | 'backend' | 'ai' |'tools'
 
  function Skills(){
     const [ category, setCategory] = useState<Category>('all')
@@ -43,7 +41,7 @@ const SKILLS = [
 
 
             <div className = "flex items-center gap-4">
-            {(['all', 'frontend', 'backend', 'tools']as Category[]).map((cat) =>(
+            {(['all', 'frontend', 'backend','ai', 'tools']as Category[]).map((cat) =>(
                 <button 
                 key={cat}
                 onClick={() => setCategory(cat)}

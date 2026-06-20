@@ -17,7 +17,7 @@ export default function VibeCheck({ name, onDone }: Props) {
 
   useEffect(() => {
     STEPS.forEach((_, i) => {
-      setTimeout(() => setCurrent(i + 1), 800 + i * 1250)
+      setTimeout(() => setCurrent(i + 1), 800 + i * 1050)
     })
 
     const total = 800 + STEPS.length * 1200 + 600
@@ -28,7 +28,7 @@ export default function VibeCheck({ name, onDone }: Props) {
       if (elapsed >= total) {
         clearInterval(bar)
         setHired(true)
-        setTimeout(onDone, 3100)
+        setTimeout(onDone, 3000)
       }
     }, 30)
 
