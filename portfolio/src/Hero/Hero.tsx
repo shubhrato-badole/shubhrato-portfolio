@@ -5,10 +5,10 @@ import Canvas  from    '../components/StarCanvas'
 
 const ROLES = [
   'Full Stack Developer',
-  'UI / UX Enthusiast',
-  'Cybersecurity Explorer',
-  'Problem Solver',
-  'Open Source Contributor',
+  'Agentic AI / RAG Engineer',
+  'Cybersecurity Enthusiast',
+  'LangGraph Builder',
+  'Caffeine-Powered Debugger',
 ]
 
 function Hero () {
