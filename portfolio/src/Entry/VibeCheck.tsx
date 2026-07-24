@@ -17,7 +17,7 @@ export default function VibeCheck({ name, onDone }: Props) {
 
   useEffect(() => {
     STEPS.forEach((_, i) => {
-      setTimeout(() => setCurrent(i + 1), 800 + i * 1050)
+      setTimeout(() => setCurrent(i + 1), 800 + i * 1000)
     })
 
     const total = 800 + STEPS.length * 1200 + 600
@@ -28,7 +28,7 @@ export default function VibeCheck({ name, onDone }: Props) {
       if (elapsed >= total) {
         clearInterval(bar)
         setHired(true)
-        setTimeout(onDone, 3000)
+        setTimeout(onDone, 2000)
       }
     }, 30)
 
@@ -106,15 +106,18 @@ export default function VibeCheck({ name, onDone }: Props) {
             style={{
               fontFamily: "'Syne', sans-serif",
               fontWeight: 800,
-              fontSize: "clamp(2rem, 8vw, 2rem)",
+              fontSize: "clamp(1.5rem, 8vw, 2.5rem)",
               letterSpacing: "-1.5px",
               lineHeight: 1,
               background: hired
                 ? "linear-gradient(135deg, #4ade80, #86efac)"
                 : "linear-gradient(135deg, #ffffff 30%, #a78bfa)",
+              backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
+              color: hired ? "#4ade80" : "#a78bfa",
               transition: "all 1.5s",
+              wordBreak: "break-word",
             }}
           >
             {name.toUpperCase()}
