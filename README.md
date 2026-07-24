@@ -2,7 +2,7 @@
 
 Personal portfolio website built from scratch with React and TypeScript.
 
-Live → [shubhrato.vercel.app](https://shubhrato.vercel.app)
+Live → [shubhrato.vercel.app](https://shubhrato-portfolio.vercel.app)
 
 ---
 
