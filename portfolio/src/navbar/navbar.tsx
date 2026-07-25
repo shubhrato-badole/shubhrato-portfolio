@@ -33,7 +33,7 @@ function Navbar() {
         backdropFilter: scrolled || menuOpen ? 'blur(20px)' : 'none',
         borderBottom: scrolled || menuOpen ? '1px solid rgba(255,255,255,0.05)' : 'none',
       }}>
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <span className="font-['Syne'] font-bold text-white text-lg">
           SB<span className="text-violet-400">.</span>
         </span>
