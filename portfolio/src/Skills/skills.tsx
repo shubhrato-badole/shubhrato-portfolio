@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 const SKILLS = [
   { name: 'React',          icon: '⚛️', level: 85, category: 'frontend',  color: '#61DAFB' },
@@ -35,51 +36,56 @@ function Skills() {
  
   return (
     <section id="skills" className="max-w-6xl mx-auto px-6 py-24">
-      <div className="font-[Syne] text-slate-500 text-[15px] tracking-[0.25em] uppercase mb-3">
-        02 / Skills
-      </div>
- 
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-        <h2 className="font-[Syne] text-white font-bold"
-          style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
-          Tech I{' '}
-          <span style={{
-            background: 'linear-gradient(90deg, #a78bfa, #22d3ee)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            color: '#a78bfa',
-          }}>
-            Work With
-          </span>
-        </h2>
- 
-        <div className="flex items-center gap-3 overflow-x-auto pb-2 md:pb-0 md:flex-wrap -mx-6 px-6 md:mx-0 md:px-0">
-          {(['all', 'frontend', 'backend', 'ai', 'tools'] as Category[]).map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              className="px-4 py-2 rounded-full font-mono text-[11px] capitalize transition-all duration-200 flex-shrink-0"
-              style={{
-                background: category === cat ? 'rgba(139,92,246,0.2)' : 'transparent',
-                border: `1px solid ${category === cat ? 'rgba(139,92,246,0.6)' : 'rgba(255,255,255,0.1)'}`,
-                color: category === cat ? '#A78BFA' : '#475569',
-              }}>
-              {cat.toUpperCase()}
-            </button>
-          ))}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="font-[Syne] text-slate-500 text-[15px] tracking-[0.25em] uppercase mb-3">
+          02 / Skills
         </div>
-      </div>
+ 
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <h2 className="font-[Syne] text-white font-bold"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
+            Tech I{' '}
+            <span style={{ color: '#a78bfa' }}>
+              Work With
+            </span>
+          </h2>
+ 
+          <div className="flex items-center gap-3 overflow-x-auto pb-2 md:pb-0 md:flex-wrap -mx-6 px-6 md:mx-0 md:px-0">
+            {(['all', 'frontend', 'backend', 'ai', 'tools'] as Category[]).map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className="px-4 py-2 rounded-full font-mono text-[11px] capitalize transition-all duration-200 flex-shrink-0"
+                style={{
+                  background: category === cat ? 'rgba(139,92,246,0.2)' : 'transparent',
+                  border: `1px solid ${category === cat ? 'rgba(139,92,246,0.6)' : 'rgba(255,255,255,0.1)'}`,
+                  color: category === cat ? '#A78BFA' : '#475569',
+                }}>
+                {cat.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </div>
+      </motion.div>
  
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {filteredSkills.map((skill) => {
+        {filteredSkills.map((skill, i) => {
           const isFlipped = hoveredSkill === skill.name
           return (
-            <div key={skill.name}
+            <motion.div key={skill.name}
               className="relative"
               style={{ perspective: '800px', height: '110px' }}
               onMouseEnter={() => setHoveredSkill(skill.name)}
               onMouseLeave={() => setHoveredSkill(null)}
+              initial={{ opacity: 0, y: 24, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: (i % 6) * 0.06, ease: [0.22, 1, 0.36, 1] }}
             >
               <div
                 className="relative w-full h-full transition-transform duration-500"
@@ -123,7 +129,7 @@ function Skills() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )
         })}
       </div>
@@ -132,4 +138,3 @@ function Skills() {
 }
  
 export default Skills;
- 
