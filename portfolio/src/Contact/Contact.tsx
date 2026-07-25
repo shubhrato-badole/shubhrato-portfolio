@@ -23,6 +23,7 @@ const socials = [
 ];
 
 const inputClass = `w-full bg-transparent font-body text-white outline-none py-3 transition-colors placeholder:text-slate-700`
+// fontSize bumped to 16px minimum — under 16px triggers iOS Safari's auto-zoom on input focus
 const inputStyle = { borderBottom: '1px solid rgba(255,255,255,0.1)', fontSize: '16px' }
 const focusStyle = 'focus:border-primary'
 
@@ -66,17 +67,16 @@ function Contact() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-        <div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <h2 className="font-bold text-white font-['Syne'] mb-3"
             style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
             {visitorName}, let's{' '}
-            <span style={{
-              background: 'linear-gradient(90deg, #a78bfa, #22d3ee)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              color: '#a78bfa',
-            }}>
+            <span style={{ color: '#a78bfa' }}>
               build together.
             </span>
           </h2>
@@ -117,8 +117,13 @@ function Contact() {
               );
             })}
           </div>
-        </div>
-        <div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        >
           {status === 'sent' ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -192,7 +197,7 @@ function Contact() {
               )}
             </form>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
