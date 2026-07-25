@@ -65,13 +65,13 @@ function Project() {
                 border: `1px solid ${isHovered ? project.color + '40' : 'rgba(255,255,255,0.07)'}`,
                 transform: isVisible
                   ? (isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)')
-                  : 'translateY(24px) scale(1)',
+                  : 'translateY(48px) scale(0.94)',
                 opacity: isVisible ? 1 : 0,
                 boxShadow: isHovered
                   ? `0 24px 48px rgba(0,0,0,0.45), 0 0 40px ${project.color}20`
                   : '0 0 0 rgba(0,0,0,0)',
-                transition: `transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease, box-shadow 0.5s ease, border-color 0.3s ease`,
-                transitionDelay: isVisible ? `${i * 80}ms` : '0ms',
+                transition: `transform 0.7s cubic-bezier(0.22,1,0.36,1), opacity 0.7s ease, box-shadow 0.5s ease, border-color 0.3s ease`,
+                transitionDelay: isVisible ? `${i * 120}ms` : '0ms',
               }}>
               <div
                 className="transition-all duration-500"
