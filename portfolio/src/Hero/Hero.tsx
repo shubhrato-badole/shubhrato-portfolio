@@ -74,9 +74,9 @@ function Hero () {
           style={{ fontSize: 'clamp(3rem, 9vw, 6.5rem)' }}>
           <span className="text-white">SHUBHRATO </span>
           <span className="text-primary bg-gradient-to-r 
-               from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-               BADOLE
-           </span>
+              from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                BADOLE
+          </span>
         </h1>
 
         <div className="font-['Syne'] font-bold mb-8 min-h-8 text-slate-300 tracking-wide"
