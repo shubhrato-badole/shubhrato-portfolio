@@ -72,7 +72,8 @@ function Hero () {
   transitionDuration: '700ms',
   transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)'}}>
           <span className="text-white">SHUBHRATO </span>
-          <span style={{ color: '#a78bfa' }}>
+          <span className="text-primary bg-gradient-to-r 
+      from-violet-400 to-cyan-400 bg-clip-text text-transparent">
             BADOLE
           </span>
         </h1>
