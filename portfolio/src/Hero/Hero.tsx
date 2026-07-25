@@ -1,3 +1,4 @@
+import { UseVisitor } from "../context/VisitorContext";
 import { useEffect, useState } from "react";
 import Canvas  from    '../components/StarCanvas'
 
@@ -11,6 +12,7 @@ const ROLES = [
 ]
 
 function Hero () {
+    const { visitorName } = UseVisitor()
     const [text, setText] = useState("");
     const [index, setIndex] = useState(0);
     const [deleting, setDeleting] = useState(false);
@@ -18,7 +20,7 @@ function Hero () {
     useEffect(() => {
   const currentText = ROLES[index]
 
-  
+
   if (!deleting && text === currentText) {
     const pause = setTimeout(() => setDeleting(true), 1500)
     return () => clearTimeout(pause)
@@ -38,14 +40,27 @@ function Hero () {
 
   return () => clearTimeout(timeout)
 }, [text, deleting, index])
-    
+
     return(
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <Canvas />
 
          <div className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-cyan-500/10 blur-[80px] pointer-events-none" />
-      <div className="text-center z-10 px-6 max-w-4xl">
+
+      <div className="text-center z-10 px-6 max-w-4xl pt-16">
+
+        {/* status badges — now part of normal page flow, not floating/fixed, so they
+            can never collide with the navbar and scroll away naturally with the page */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8">
+          <div className="font-mono text-[12px] text-slate-500 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]">
+            welcome, <span className="text-violet-400">{visitorName}</span>
+          </div>
+          <div className="flex items-center gap-2 font-mono text-[11px] text-violet-300 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+            Available for work
+          </div>
+        </div>
 
         <div className="font-mono text-[11px] text-violet-400/80 tracking-[0.3em] uppercase mb-4">
           Hello World ·/·
@@ -56,12 +71,7 @@ function Hero () {
   transitionDuration: '700ms',
   transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)'}}>
           <span className="text-white">SHUBHRATO </span>
-          <span style={{
-            background: 'linear-gradient(90deg, #a78bfa, #22d3ee)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
+          <span className="gradient-text gradient-text--violet-cyan">
             BADOLE
           </span>
         </h1>
@@ -69,7 +79,7 @@ function Hero () {
         <div className="font-['Syne'] font-bold mb-8 min-h-8 text-slate-300 transition-all duration-300 tracking-wide"
           style={{ fontSize: 'clamp(1.2rem, 5vw, 1.8rem)' }}>
            {text}
-         
+
         </div>
 
         <p className="text-slate-400 max-w-lg mx-auto mb-10 leading-relaxed text-[15px]">
@@ -90,7 +100,7 @@ function Hero () {
 
       </div>
 
-    
+
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
         <span className="font-mono text-[10px] text-slate-700 tracking-[0.2em]">SCROLL</span>
         <div className="w-px h-7 bg-gradient-to-b from-slate-700 to-transparent" />
