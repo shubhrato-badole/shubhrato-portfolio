@@ -47,10 +47,10 @@ function Hero () {
 
          <div className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-cyan-500/10 blur-[80px] pointer-events-none" />
-      <div className="absolute top-4 left-4 font-mono text-[13px] text-slate-500 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]">
+      <div className="absolute top-20 left-4 font-mono text-[13px] text-slate-500 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]">
         welcome, <span className="text-violet-400 ">{visitorName}</span>
       </div>
-       <div className="absolute top-4 right-4 flex items-center gap-2 font-mono text-[11px] text-violet-300 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10">
+       <div className="absolute top-20 right-4 flex items-center gap-2 font-mono text-[11px] text-violet-300 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10">
         <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
         Available for work
       </div>
@@ -65,12 +65,18 @@ function Hero () {
   transitionDuration: '700ms',
   transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)'}}>
           <span className="text-white">SHUBHRATO </span>
-          <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+          <span style={{
+            background: 'linear-gradient(90deg, #a78bfa, #22d3ee)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>
             BADOLE
           </span>
         </h1>
 
-        <div className="font-['Syne'] font-bold text-[clamp(1.8rem,5vw,1.5rem)] mb-8 h-8  text-slate-300 transtion-all duration-300  tracking-wide">
+        <div className="font-['Syne'] font-bold mb-8 min-h-8 text-slate-300 transition-all duration-300 tracking-wide"
+          style={{ fontSize: 'clamp(1.2rem, 5vw, 1.8rem)' }}>
            {text}
          
         </div>
@@ -103,4 +109,4 @@ function Hero () {
     )
 }
 
-export default Hero 
+export default Hero
