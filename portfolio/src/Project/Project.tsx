@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import ProjectData from './ProjectData';
+import ProjectModal from './ProjectModal';
 
 function Project() {
   const [hovered, setHovered] = useState<number | null>(null)
   const [visible, setVisible] = useState<Set<number>>(new Set())
+  const [selected, setSelected] = useState<typeof ProjectData[number] | null>(null)
   const cardRefs = useRef<Record<number, HTMLDivElement | null>>({})
+  const glowRefs = useRef<Record<number, HTMLDivElement | null>>({})
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -25,6 +28,30 @@ function Project() {
 
     return () => observer.disconnect()
   }, [])
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, id: number, color: string) => {
+    const card = cardRefs.current[id]
+    if (!card) return
+    const rect = card.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width - 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5
+    card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-6px) scale(1.015)`
+
+    const glow = glowRefs.current[id]
+    if (glow) {
+      glow.style.background = `radial-gradient(280px at ${e.clientX - rect.left}px ${e.clientY - rect.top}px, ${color}22, transparent 75%)`
+    }
+  }
+
+  const handleMouseLeave = (id: number) => {
+    const card = cardRefs.current[id]
+    if (card) {
+      card.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) translateY(0) scale(1)'
+    }
+    const glow = glowRefs.current[id]
+    if (glow) glow.style.background = 'transparent'
+    setHovered(null)
+  }
 
   return (
     <section id="projects" className="max-w-6xl mx-auto px-6 py-24">
@@ -49,38 +76,40 @@ function Project() {
         </a>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ perspective: '1200px' }}>
         {ProjectData.map((project, i) => {
-          const isHovered = hovered === project.id
           const isVisible = visible.has(project.id)
           return (
             <div key={project.id}
               ref={(el) => { cardRefs.current[project.id] = el }}
               data-project-id={project.id}
               onMouseEnter={() => setHovered(project.id)}
-              onMouseLeave={() => setHovered(null)}
-              className="rounded-xl overflow-hidden cursor-default"
+              onMouseMove={(e) => handleMouseMove(e, project.id, project.color)}
+              onMouseLeave={() => handleMouseLeave(project.id)}
+              onClick={() => setSelected(project)}
+              className="relative rounded-xl overflow-hidden cursor-pointer"
               style={{
                 background: '#0a0118',
-                border: `1px solid ${isHovered ? project.color + '40' : 'rgba(255,255,255,0.07)'}`,
-                transform: isVisible
-                  ? (isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)')
-                  : 'translateY(48px) scale(0.94)',
+                border: `1px solid ${hovered === project.id ? project.color + '40' : 'rgba(255,255,255,0.07)'}`,
                 opacity: isVisible ? 1 : 0,
-                boxShadow: isHovered
+                transformStyle: 'preserve-3d',
+                transition: isVisible
+                  ? 'transform 0.15s ease, box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.7s ease'
+                  : 'none',
+                transitionDelay: isVisible ? `${i * 120}ms` : '0ms',
+                boxShadow: hovered === project.id
                   ? `0 24px 48px rgba(0,0,0,0.45), 0 0 40px ${project.color}20`
                   : '0 0 0 rgba(0,0,0,0)',
-                transition: `transform 0.7s cubic-bezier(0.22,1,0.36,1), opacity 0.7s ease, box-shadow 0.5s ease, border-color 0.3s ease`,
-                transitionDelay: isVisible ? `${i * 120}ms` : '0ms',
+                ...(!isVisible && { transform: 'translateY(48px) scale(0.94)' }),
               }}>
+              {/* cursor-following glow */}
               <div
-                className="transition-all duration-500"
-                style={{
-                  height: isHovered ? '5px' : '3px',
-                  background: project.color,
-                }}
-              ></div>
-              <div className="p-6">
+                ref={(el) => { glowRefs.current[project.id] = el }}
+                className="absolute inset-0 pointer-events-none z-10 transition-all duration-300"
+              />
+
+              <div className="h-[3px] relative z-20" style={{ background: project.color }}></div>
+              <div className="p-6 relative z-20">
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <div className="font-mono text-[11px] text-slate-600 mb-1">
@@ -96,7 +125,7 @@ function Project() {
                       background: project.color + '20',
                       border: `1px solid ${project.color}40`,
                       color: project.color,
-                      transform: isHovered ? 'rotate(12deg) scale(1.1)' : 'rotate(0deg) scale(1)',
+                      transform: hovered === project.id ? 'rotate(12deg) scale(1.1)' : 'rotate(0deg) scale(1)',
                     }}
                   >
                     ⬡
@@ -128,18 +157,18 @@ function Project() {
                   <span className="text-xs text-slate-600 font-mono">click to explore →</span>
                   <div className="flex items-center gap-3">
                     {project.github && (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer">
-                        <span className="font-mono text-xs text-slate-500 hover:text-white transition-colors">
-                          GitHub
-                        </span>
+                      <a href={project.github} target="_blank" rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="font-mono text-xs text-slate-500 hover:text-white transition-colors">
+                        GitHub
                       </a>
                     )}
                     {project.live && (
-                      <a href={project.live} target="_blank" rel="noopener noreferrer">
-                        <span className="font-mono text-xs hover:text-white transition-colors"
-                          style={{ color: project.color }}>
-                          Live ↗
-                        </span>
+                      <a href={project.live} target="_blank" rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="font-mono text-xs hover:text-white transition-colors"
+                        style={{ color: project.color }}>
+                        Live ↗
                       </a>
                     )}
                   </div>
@@ -149,6 +178,10 @@ function Project() {
           )
         })}
       </div>
+
+      {selected && (
+        <ProjectModal project={selected} onClose={() => setSelected(null)} />
+      )}
     </section>
   )
 }
