@@ -1,6 +1,7 @@
 import { UseVisitor } from "../context/VisitorContext";
 import { useEffect, useState } from "react";
 import Canvas  from    '../components/StarCanvas'
+import { smoothScrollTo } from "../components/scrollUtils";
 
 
 const ROLES = [
@@ -26,7 +27,6 @@ function Hero () {
     return () => clearTimeout(pause)
   }
 
- 
   const jitter = Math.random() * 30
   const speed = deleting ? 35 + jitter : 70 + jitter
 
@@ -52,7 +52,6 @@ function Hero () {
          <div className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-cyan-500/10 blur-[80px] pointer-events-none" />
 
-      
       <div className="absolute top-24 left-0 right-0 px-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="font-mono text-[12px] sm:text-[13px] text-slate-500 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]">
@@ -72,17 +71,15 @@ function Hero () {
         </div>
 
         <h1 className="font-['Syne'] font-bold leading-none mb-5"
-          style={{ fontSize: 'clamp(3rem, 9vw, 6.5rem)' ,  transitionProperty: 'all',
-  transitionDuration: '700ms',
-  transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)'}}>
+          style={{ fontSize: 'clamp(3rem, 9vw, 6.5rem)' }}>
           <span className="text-white">SHUBHRATO </span>
           <span className="text-primary bg-gradient-to-r 
-      from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-            BADOLE
-          </span>
+               from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+               BADOLE
+           </span>
         </h1>
 
-        <div className="font-['Syne'] font-bold mb-8 min-h-8 text-slate-300 transition-all duration-300 tracking-wide"
+        <div className="font-['Syne'] font-bold mb-8 min-h-8 text-slate-300 tracking-wide"
           style={{ fontSize: 'clamp(1.2rem, 5vw, 1.8rem)' }}>
            {text}
            <span className="inline-block w-[2px] ml-1 bg-violet-400" style={{ animation: 'blink 1s step-end infinite' }}>&nbsp;</span>
@@ -95,10 +92,20 @@ function Hero () {
 
         <div className="flex items-center justify-center gap-3 flex-wrap">
           <a href="#projects"
+            onClick={(e) => {
+              e.preventDefault()
+              const target = document.querySelector('#projects')
+              if (target) smoothScrollTo(target, 900, 80)
+            }}
             className="px-6 py-3 rounded-xl font-['Syne'] font-medium text-white text-sm bg-gradient-to-r from-violet-700 to-violet-500 border border-violet-500/50 hover:bg-violet-400/50 hover:border-violet-400/50 hover:-translate-y-1 transition-colors duration-500 ease-out">
             View My Work
           </a>
           <a href="#contact"
+            onClick={(e) => {
+              e.preventDefault()
+              const target = document.querySelector('#contact')
+              if (target) smoothScrollTo(target, 900, 80)
+            }}
             className="px-6 py-3 rounded-xl font-['Syne'] font-medium text-violet-300 text-sm border border-violet-500/30 hover:border-violet-500/50 hover:bg-violet-500/10 hover:-translate-y-1 transition-colors duration-300">
             Hire Me
           </a>
