@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { UseVisitor } from '../context/VisitorContext';
 
 const facts = [
@@ -29,6 +30,53 @@ const codeLines: [string, string][] = [
 
 const lineDelay = 0.12
 
+function FactCard({ fact, delay }: { fact: typeof facts[number]; delay: number }) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const springConfig = { stiffness: 150, damping: 20, mass: 0.5 }
+  const smoothX = useSpring(mouseX, springConfig)
+  const smoothY = useSpring(mouseY, springConfig)
+  const rotateX = useTransform(smoothY, [-0.5, 0.5], [6, -6])
+  const rotateY = useTransform(smoothX, [-0.5, 0.5], [-6, 6])
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current
+    if (!card) return
+    const rect = card.getBoundingClientRect()
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5)
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5)
+  }
+
+  const handleMouseLeave = () => {
+    mouseX.set(0)
+    mouseY.set(0)
+  }
+
+  return (
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      whileHover={{ scale: 1.03 }}
+      transition={{ duration: 0.4, delay, ease: [0.22, 1, 0.36, 1] }}
+      style={{
+        rotateX,
+        rotateY,
+        transformPerspective: 600,
+      }}
+      className="bg-white/[0.03] border border-purple-400/[0.3] rounded-xl p-4 hover:bg-purple-600/[0.05] hover:border-violet-400/60 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)] transition-colors duration-500 ease-out"
+    >
+      <span className="text-2xl mr-3">{fact.icon}</span> <br />
+      <span className="text-slate-400 mb-0.5">{fact.label} </span> <br />
+      <span className="text-white">{fact.value}</span>
+    </motion.div>
+  )
+}
+
 function About() {
   const { visitorName } = UseVisitor()
 
@@ -58,7 +106,6 @@ function About() {
             <span style={{ color: '#a78bfa' }}>I build things.</span>
           </motion.h2>
 
-       
           {aboutLines.map((line, i) => (
             <motion.p
               key={i}
@@ -82,23 +129,13 @@ function About() {
             I believe the best code is code that solves real problems for real people — elegantly.
           </motion.p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10" style={{ perspective: '600px' }}>
             {facts.map((fact, i) => (
-              <motion.div key={fact.icon}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{
-                  duration: 0.4,
-                  delay: 0.15 + (aboutLines.length + 1) * lineDelay + i * 0.08,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="bg-white/[0.03] border border-purple-400/[0.3] rounded-xl p-4 hover:bg-purple-600/[0.05] hover:border-violet-400/60 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)] transition-all duration-500 ease-out"
-              >
-                <span className="text-2xl mr-3">{fact.icon}</span> <br />
-                <span className="text-slate-400 mb-0.5">{fact.label} </span> <br />
-                <span className="text-white">{fact.value}</span>
-              </motion.div>
+              <FactCard
+                key={fact.icon}
+                fact={fact}
+                delay={0.15 + (aboutLines.length + 1) * lineDelay + i * 0.08}
+              />
             ))}
           </div>
         </div>
@@ -119,23 +156,32 @@ function About() {
             <div className="font-mono text-[11px] text-slate-600 ml-auto">developer.ts</div>
           </div>
           <div className="p-8 font-mono text-[15px] leading-8 overflow-x-auto" style={{ minHeight: '320px' }}>
-            {codeLines.map(([color, text], i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -8 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.3, delay: 0.2 + i * 0.09, ease: [0.22, 1, 0.36, 1] }}
-                className="flex gap-4"
-              >
-                <span className="text-slate-700 text-[11px] w-4 text-right select-none">
-                  {i + 1}
-                </span>
-                <span style={{ color }} className="font-mono text-[15px]">
-                  {text}
-                </span>
-              </motion.div>
-            ))}
+            {codeLines.map(([color, text], i) => {
+              const isLast = i === codeLines.length - 1
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: '-60px' }}
+                  transition={{ duration: 0.3, delay: 0.2 + i * 0.09, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex gap-4"
+                >
+                  <span className="text-slate-700 text-[11px] w-4 text-right select-none">
+                    {i + 1}
+                  </span>
+                  <span style={{ color }} className="font-mono text-[15px]">
+                    {text}
+                    {isLast && (
+                      <span
+                        className="inline-block w-[8px] h-[16px] ml-1 align-middle bg-violet-400"
+                        style={{ animation: 'blink 1s step-end infinite' }}
+                      />
+                    )}
+                  </span>
+                </motion.div>
+              )
+            })}
           </div>
         </motion.div>
       </div>
