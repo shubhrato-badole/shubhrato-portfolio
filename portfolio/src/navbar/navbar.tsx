@@ -21,7 +21,7 @@ function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleLinkClick = (href) => {
+  const handleLinkClick = (href:any) => {
     setMenuOpen(false)
     const target = document.querySelector(href)
     if (target) {
@@ -41,7 +41,7 @@ function Navbar() {
           SB<span className="text-violet-400">.</span>
         </span>
 
-        {/* Desktop links */}
+
         <div className="hidden md:flex items-center gap-8">
           {LINKS.map((link, i) =>
             <div key={i} onClick={() => handleLinkClick(link.href)}
@@ -51,7 +51,7 @@ function Navbar() {
           )}
         </div>
 
-        {/* Mobile hamburger button */}
+
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden flex flex-col justify-center items-center gap-[5px] w-8 h-8 relative z-50"
