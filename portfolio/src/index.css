@@ -16,3 +16,27 @@ body {
 .animate-fadeUp {
   animation: fadeUp 0.7s ease forwards;
 }
+.gradient-text {
+  color: #ffffff;
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .gradient-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.gradient-text--violet {
+  background: linear-gradient(135deg, #ffffff 30%, #a78bfa);
+}
+
+.gradient-text--green {
+  background: linear-gradient(135deg, #4ade80, #86efac);
+}
+
+.gradient-text--violet-cyan {
+  background: linear-gradient(90deg, #a78bfa, #22d3ee);
+}
