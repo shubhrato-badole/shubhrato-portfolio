@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { UseVisitor } from '../context/VisitorContext';
 
 const facts = [
   { icon: '🎓', label: 'Education', value: 'B.Tech CS (Cybersecurity)' },
@@ -7,7 +8,8 @@ const facts = [
   { icon: '🔐', label: 'Background', value: 'Cybercrime Investigation' },
 ]
 
-function About({ visitorName }: { visitorName: string }) {
+function About() {
+  const { visitorName } = UseVisitor()
   return (
     <section id="about" className="max-w-6xl mx-auto px-6 py-24">
       <motion.div
@@ -30,7 +32,8 @@ function About({ visitorName }: { visitorName: string }) {
           <h2 className="font-['Syne'] font-bold text-white mb-6"
             style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.1 }}>
             Hey {visitorName}, <br />
-            <span style={{ color: '#a78bfa' }}>I build things.</span>
+            <span className="text-primary bg-gradient-to-r 
+           from-violet-400 to-cyan-400 bg-clip-text text-transparent"> I build things.</span>
           </h2>
 
           <p className="text-slate-400">
