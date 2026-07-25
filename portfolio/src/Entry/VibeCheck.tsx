@@ -40,7 +40,7 @@ export default function VibeCheck({ name, onDone }: Props) {
       className="min-h-screen flex items-center justify-center px-4"
       style={{ background: "#04010f" }}
     >
-    
+
       <div
         className="absolute rounded-full pointer-events-none"
         style={{
@@ -54,7 +54,7 @@ export default function VibeCheck({ name, onDone }: Props) {
         }}
       />
 
-      
+
       <div
         className="relative z-10 w-full"
         style={{
@@ -69,7 +69,7 @@ export default function VibeCheck({ name, onDone }: Props) {
           transition: "border-color 1.5s",
         }}
       >
-        
+
         <div
           style={{
             fontFamily: "monospace",
@@ -88,7 +88,7 @@ export default function VibeCheck({ name, onDone }: Props) {
           </span>
         </div>
 
-       
+
         <div style={{ marginBottom: 28, textAlign: "center" }}>
           <div
             style={{
@@ -103,7 +103,6 @@ export default function VibeCheck({ name, onDone }: Props) {
             candidate
           </div>
           <div
-            className={`gradient-text ${hired ? 'gradient-text--green' : 'gradient-text--violet'}`}
             style={{
               fontFamily: "'Syne', sans-serif",
               fontWeight: 800,
@@ -115,14 +114,15 @@ export default function VibeCheck({ name, onDone }: Props) {
               textOverflow: "ellipsis",
               maxWidth: "100%",
               display: "inline-block",
-              transition: "all 1.5s",
+              color: hired ? "#4ADE80" : "#ffffff",
+              transition: "color 1.5s",
             }}
           >
             {name.toUpperCase()}
           </div>
         </div>
 
-       
+
         <div
           style={{
             height: 1,
@@ -131,7 +131,7 @@ export default function VibeCheck({ name, onDone }: Props) {
           }}
         />
 
-      
+
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
           {STEPS.map((step, i) => {
             const done    = current > i + 1
@@ -198,7 +198,7 @@ export default function VibeCheck({ name, onDone }: Props) {
           />
         </div>
 
-     
+
         <div
           style={{
             display: "flex",
@@ -211,7 +211,7 @@ export default function VibeCheck({ name, onDone }: Props) {
           <span>{hired ? "✓ cleared" : `${prog}% · please hold`}</span>
         </div>
 
-       
+
         <div
           style={{
             overflow: "hidden",
