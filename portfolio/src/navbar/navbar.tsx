@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { smoothScrollTo } from "../components/scrollUtils";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -25,7 +26,7 @@ function Navbar() {
     setMenuOpen(false)
     const target = document.querySelector(href)
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      smoothScrollTo(target, 900, 80)
     }
   }
 
@@ -41,7 +42,7 @@ function Navbar() {
           SB<span className="text-violet-400">.</span>
         </span>
 
-
+        {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
           {LINKS.map((link, i) =>
             <div key={i} onClick={() => handleLinkClick(link.href)}
@@ -51,7 +52,7 @@ function Navbar() {
           )}
         </div>
 
-
+        {/* Mobile hamburger button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden flex flex-col justify-center items-center gap-[5px] w-8 h-8 relative z-50"
