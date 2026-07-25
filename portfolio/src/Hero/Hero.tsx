@@ -1,6 +1,5 @@
 import { UseVisitor } from "../context/VisitorContext";
 import { useEffect, useState } from "react";
-import { motion, type Variants } from "framer-motion";
 import Canvas  from    '../components/StarCanvas'
 
 
@@ -11,22 +10,6 @@ const ROLES = [
   'LangGraph Builder',
   'Caffeine-Powered Debugger',
 ]
-
-const container: Variants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.09, delayChildren: 0.1 },
-  },
-}
-
-const item: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  },
-}
 
 function Hero () {
     const { visitorName } = UseVisitor()
@@ -43,6 +26,7 @@ function Hero () {
     return () => clearTimeout(pause)
   }
 
+ 
   const jitter = Math.random() * 30
   const speed = deleting ? 35 + jitter : 70 + jitter
 
@@ -69,12 +53,7 @@ function Hero () {
       <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-cyan-500/10 blur-[80px] pointer-events-none" />
 
       
-      <motion.div
-        className="absolute top-24 left-0 right-0 px-6"
-        variants={item}
-        initial="hidden"
-        animate="show"
-      >
+      <div className="absolute top-24 left-0 right-0 px-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="font-mono text-[12px] sm:text-[13px] text-slate-500 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]">
             welcome, <span className="text-violet-400">{visitorName}</span>
@@ -84,40 +63,37 @@ function Hero () {
             Available for work
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        className="text-center z-10 px-6 max-w-4xl pt-16"
-        variants={container}
-        initial="hidden"
-        animate="show"
-      >
+      <div className="text-center z-10 px-6 max-w-4xl pt-16">
 
-        <motion.div variants={item} className="font-mono text-[11px] text-violet-400/80 tracking-[0.3em] uppercase mb-4">
+        <div className="font-mono text-[11px] text-violet-400/80 tracking-[0.3em] uppercase mb-4">
           Hello World ·/·
-        </motion.div>
+        </div>
 
-        <motion.h1 variants={item} className="font-['Syne'] font-bold leading-none mb-5"
-          style={{ fontSize: 'clamp(3rem, 9vw, 6.5rem)' }}>
+        <h1 className="font-['Syne'] font-bold leading-none mb-5"
+          style={{ fontSize: 'clamp(3rem, 9vw, 6.5rem)' ,  transitionProperty: 'all',
+  transitionDuration: '700ms',
+  transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)'}}>
           <span className="text-white">SHUBHRATO </span>
           <span className="text-primary bg-gradient-to-r 
-           from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+      from-violet-400 to-cyan-400 bg-clip-text text-transparent">
             BADOLE
           </span>
-        </motion.h1>
+        </h1>
 
-        <motion.div variants={item} className="font-['Syne'] font-bold mb-8 min-h-8 text-slate-300 tracking-wide"
+        <div className="font-['Syne'] font-bold mb-8 min-h-8 text-slate-300 transition-all duration-300 tracking-wide"
           style={{ fontSize: 'clamp(1.2rem, 5vw, 1.8rem)' }}>
            {text}
            <span className="inline-block w-[2px] ml-1 bg-violet-400" style={{ animation: 'blink 1s step-end infinite' }}>&nbsp;</span>
-        </motion.div>
+        </div>
 
-        <motion.p variants={item} className="text-slate-400 max-w-lg mx-auto mb-10 leading-relaxed text-[15px]">
+        <p className="text-slate-400 max-w-lg mx-auto mb-10 leading-relaxed text-[15px]">
           I build fast, beautiful, and secure web apps. Passionate about
           clean code, great UX, and cybersecurity.
-        </motion.p>
+        </p>
 
-        <motion.div variants={item} className="flex items-center justify-center gap-3 flex-wrap">
+        <div className="flex items-center justify-center gap-3 flex-wrap">
           <a href="#projects"
             className="px-6 py-3 rounded-xl font-['Syne'] font-medium text-white text-sm bg-gradient-to-r from-violet-700 to-violet-500 border border-violet-500/50 hover:bg-violet-400/50 hover:border-violet-400/50 hover:-translate-y-1 transition-colors duration-500 ease-out">
             View My Work
@@ -126,9 +102,9 @@ function Hero () {
             className="px-6 py-3 rounded-xl font-['Syne'] font-medium text-violet-300 text-sm border border-violet-500/30 hover:border-violet-500/50 hover:bg-violet-500/10 hover:-translate-y-1 transition-colors duration-300">
             Hire Me
           </a>
-        </motion.div>
+        </div>
 
-      </motion.div>
+      </div>
 
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
