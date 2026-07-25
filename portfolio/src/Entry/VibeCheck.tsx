@@ -103,10 +103,10 @@ export default function VibeCheck({ name, onDone }: Props) {
             candidate
           </div>
           <div
+            className={`gradient-text ${hired ? 'gradient-text--green' : 'gradient-text--violet'}`}
             style={{
               fontFamily: "'Syne', sans-serif",
               fontWeight: 800,
-              // scales down as the name gets longer so it stays on one line instead of wrapping
               fontSize: `clamp(1rem, ${Math.min(8, 62 / Math.max(name.length, 1))}vw, 2.5rem)`,
               letterSpacing: "-1.5px",
               lineHeight: 1,
@@ -115,15 +115,6 @@ export default function VibeCheck({ name, onDone }: Props) {
               textOverflow: "ellipsis",
               maxWidth: "100%",
               display: "inline-block",
-              background: hired
-                ? "linear-gradient(135deg, #4ade80, #86efac)"
-                : "linear-gradient(135deg, #ffffff 30%, #a78bfa)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              // fallback color kept deliberately far from the gradient tones so text
-              // stays readable even if background-clip fails to render on some browsers
-              color: "#ffffff",
               transition: "all 1.5s",
             }}
           >
