@@ -25,7 +25,7 @@ const PROJECTS = [
     id: 2,
     title: 'JobFit — AI Job Matching Platform',
     year: '2026',
-    desc: 'Full-stack AI platform that analyzes resumes against job descriptions, generates match scores, identifies missing skills, and provides personalized career guidance using Gemini AI.',
+    desc:'Full-stack AI platform that parses resumes against job descriptions using Gemini AI, generating match scores, surfacing missing skills, and producing a personalized improvement roadmap. Backed by a two-token JWT/OAuth auth system and Redis-cached AI responses that cut latency from ~4s to under 5ms — deployed via Docker, Nginx, and a GitHub Actions CI/CD pipeline.',
     tech: ['React', 'Node.js', 'PostgreSQL', 'Redis', 'Docker', 'Gemini AI'],
     github: 'https://github.com/shubhrato-badole/JobFit.git',
     live: 'https://job-fit-murex.vercel.app',
