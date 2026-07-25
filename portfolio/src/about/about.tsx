@@ -1,63 +1,87 @@
-import { UseVisitor } from "../context/VisitorContext";
-
-
-function About (){
-const {visitorName} = UseVisitor()
+import { motion } from 'framer-motion';
 
 const facts = [
-  { icon: '🎓', label: 'Degree', value: 'B.Tech Computer Science' },
-  { icon: '📍', label: 'Location', value: 'Nagpur, India' },
-  { icon: '🎯', label: 'Status', value: 'Open to Work' },
-  { icon: '🚀', label: 'Projects', value: '4+ Built' },
+  { icon: '🎓', label: 'Education', value: 'B.Tech CS (Cybersecurity)' },
+  { icon: '📍', label: 'Based in', value: 'Nagpur, India' },
+  { icon: '🧠', label: 'Focus', value: 'Agentic AI & RAG Systems' },
+  { icon: '🔐', label: 'Background', value: 'Cybercrime Investigation' },
 ]
 
-
-return(
+function About({ visitorName }: { visitorName: string }) {
+  return (
     <section id="about" className="max-w-6xl mx-auto px-6 py-24">
-    <div className="fotn['Syne] text-slate-500 font-mono text-[12px] tracking-[0.25em] text-primary uppercase mb-3">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="font-mono text-[12px] tracking-[0.25em] text-slate-500 uppercase mb-3"
+      >
         01 / About
-    </div>
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-     <div className= "flex-1 felx-col" 
-     >
-     <h2 className="font-['Syne'] font-bold text-white mb-6 
-      " style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.1 }}>Hey {visitorName}, <br /> 
-    <span className="text-primary bg-gradient-to-r 
-      from-violet-400 to-cyan-400 bg-clip-text text-transparent"> I build things.</span>
-      </h2>
+      </motion.div>
 
-      <p className="text-slate-400 ">I'm a Full Stack Developer passionate about 
-        crafting digital experiences that are both beautiful and 
-        technically solid. From pixel-perfect Uls to scalable backend 
-        systems — I care about every layer.</p>
-        
-        <p className="text-slate-400 mt-5">When I'm not coding, I'm exploring cybersecurity, contributing to open 
-            source, or breaking things in my homelab to 
-            understand how they work.</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h2 className="font-['Syne'] font-bold text-white mb-6"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: 1.1 }}>
+            Hey {visitorName}, <br />
+            <span style={{ color: '#a78bfa' }}>I build things.</span>
+          </h2>
 
-            <p className="text-purple-400 mt-6">I believe the best code is code that solves real problems for real people - elegantly.</p>
-            <div className="grid grid-cols-2 gap-4 mt-10"> 
-              {facts.map((fact) => (
-                <div key={fact.icon} className="bg-white/[0.03] border border-purple-400/[0.3] rounded-xl p-4 hover:bg-purple-600/[0.05] hover:border-violet-400/60 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)] transition-all duration-500 ease-out ">
-                 <span className="text-2xl mr-3">{fact.icon}</span> <br />
-                 <span className="text-slate-400 mb-0.5 ">{fact.label} </span> <br /> 
-                 <span className="text-white ">{fact.value}</span>
-                </div>
-              ))}
-            </div>
-     </div>
+          <p className="text-slate-400">
+            I'm a Full Stack Developer passionate about
+            crafting digital experiences that are both beautiful and
+            technically solid. From pixel-perfect UIs to scalable backend
+            systems — I care about every layer.
+          </p>
+          <p className="text-slate-400 mt-5">
+            When I'm not coding, I'm exploring cybersecurity, contributing to open
+            source, or breaking things in my homelab to
+            understand how they work.
+          </p>
 
-     <div className="flex-1 relative rounded-2xl overflow-hidden border border-violet-500/20"
-     style={{ background: '#0a0118', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}>
-       <div className="flex items-center gap-2 px-5 py-4 border-b border-white/[0.06] "
-        style={{ background: 'rgba(255,255,255,0.03)' }} >
-        <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
-        <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-        <div className="w-3 h-3 rounded-full bg-[#28CA41]" />
-        <div className="font-mono text-[11px] text-slate-600 ml-auto">developer.ts</div>
-        </div>
-         
-         <div className="p-8 font-mono text-[15px] leading-8 "style={{ minHeight: '320px' }}>
+          <p className="text-purple-400 mt-6">
+            I believe the best code is code that solves real problems for real people — elegantly.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10">
+            {facts.map((fact, i) => (
+              <motion.div key={fact.icon}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.4, delay: 0.2 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                className="bg-white/[0.03] border border-purple-400/[0.3] rounded-xl p-4 hover:bg-purple-600/[0.05] hover:border-violet-400/60 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(139,92,246,0.15)] transition-all duration-500 ease-out"
+              >
+                <span className="text-2xl mr-3">{fact.icon}</span> <br />
+                <span className="text-slate-400 mb-0.5">{fact.label} </span> <br />
+                <span className="text-white">{fact.value}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="relative rounded-2xl overflow-hidden border border-violet-500/20"
+          style={{ background: '#0a0118', boxShadow: '0 20px 50px rgba(0,0,0,0.5)' }}
+        >
+          <div className="flex items-center gap-2 px-5 py-4 border-b border-white/[0.06]"
+            style={{ background: 'rgba(255,255,255,0.03)' }}>
+            <div className="w-3 h-3 rounded-full bg-[#FF5F57]" />
+            <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
+            <div className="w-3 h-3 rounded-full bg-[#28CA41]" />
+            <div className="font-mono text-[11px] text-slate-600 ml-auto">developer.ts</div>
+          </div>
+          <div className="p-8 font-mono text-[15px] leading-8 overflow-x-auto" style={{ minHeight: '320px' }}>
             {[
               ['#E2E8F0', 'const developer = {'],
               ['#A78BFA', '  name: "Shubhrato Badole",'],
@@ -69,7 +93,7 @@ return(
               ['#F59E0B', '  focus: "AI + Cybersecurity",'],
               ['#06B6D4', '  solve: (p) => ☕ + code'],
               ['#E2E8F0', '}'],
-            ].map(([color, text ], i) => (
+            ].map(([color, text], i) => (
               <div key={i} className="flex gap-4">
                 <span className="text-slate-700 text-[11px] w-4 text-right select-none">
                   {i + 1}
@@ -79,17 +103,11 @@ return(
                 </span>
               </div>
             ))}
-         </div>
-       </div>
-        
-    </div>
+          </div>
+        </motion.div>
+      </div>
     </section>
-)
+  )
 }
 
 export default About;
-
-
-
-
-  
