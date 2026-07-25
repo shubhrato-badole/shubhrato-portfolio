@@ -48,19 +48,18 @@ function Hero () {
          <div className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-cyan-500/10 blur-[80px] pointer-events-none" />
 
-      <div className="text-center z-10 px-6 max-w-4xl pt-16">
+      {/* corner badges — positioned below the fixed navbar (h-16 = 64px) with safe
+          clearance, absolute to this section so they scroll away with the hero
+          instead of staying pinned to the viewport */}
+      <div className="absolute top-24 left-4 sm:left-6 font-mono text-[12px] sm:text-[13px] text-slate-500 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]">
+        welcome, <span className="text-violet-400">{visitorName}</span>
+      </div>
+      <div className="absolute top-24 right-4 sm:right-6 flex items-center gap-2 font-mono text-[10px] sm:text-[11px] text-violet-300 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10">
+        <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+        Available for work
+      </div>
 
-        {/* status badges — now part of normal page flow, not floating/fixed, so they
-            can never collide with the navbar and scroll away naturally with the page */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8">
-          <div className="font-mono text-[12px] text-slate-500 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]">
-            welcome, <span className="text-violet-400">{visitorName}</span>
-          </div>
-          <div className="flex items-center gap-2 font-mono text-[11px] text-violet-300 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-            Available for work
-          </div>
-        </div>
+      <div className="text-center z-10 px-6 max-w-4xl pt-16">
 
         <div className="font-mono text-[11px] text-violet-400/80 tracking-[0.3em] uppercase mb-4">
           Hello World ·/·
@@ -71,7 +70,7 @@ function Hero () {
   transitionDuration: '700ms',
   transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)'}}>
           <span className="text-white">SHUBHRATO </span>
-          <span className="gradient-text gradient-text--violet-cyan">
+          <span style={{ color: '#22d3ee' }}>
             BADOLE
           </span>
         </h1>
