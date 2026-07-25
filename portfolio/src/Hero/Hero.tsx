@@ -26,6 +26,10 @@ function Hero () {
     return () => clearTimeout(pause)
   }
 
+ 
+  const jitter = Math.random() * 30
+  const speed = deleting ? 35 + jitter : 70 + jitter
+
   const timeout = setTimeout(() => {
     if (!deleting) {
       setText(currentText.slice(0, text.length + 1))
@@ -36,7 +40,7 @@ function Hero () {
         setIndex((index + 1) % ROLES.length)
       }
     }
-  }, deleting ? 40 : 85)
+  }, speed)
 
   return () => clearTimeout(timeout)
 }, [text, deleting, index])
@@ -81,7 +85,7 @@ function Hero () {
         <div className="font-['Syne'] font-bold mb-8 min-h-8 text-slate-300 transition-all duration-300 tracking-wide"
           style={{ fontSize: 'clamp(1.2rem, 5vw, 1.8rem)' }}>
            {text}
-
+           <span className="inline-block w-[2px] ml-1 bg-violet-400" style={{ animation: 'blink 1s step-end infinite' }}>&nbsp;</span>
         </div>
 
         <p className="text-slate-400 max-w-lg mx-auto mb-10 leading-relaxed text-[15px]">
