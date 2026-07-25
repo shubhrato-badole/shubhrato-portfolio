@@ -48,8 +48,7 @@ function Hero () {
          <div className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-cyan-500/10 blur-[80px] pointer-events-none" />
 
-      {/* badges now span the same max-w-6xl container as the navbar, so "welcome"
-          lines up under the logo and "Available for work" lines up under Contact */}
+      
       <div className="absolute top-24 left-0 right-0 px-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="font-mono text-[12px] sm:text-[13px] text-slate-500 px-3 py-1 rounded-full border border-white/10 bg-white/[0.02]">
@@ -73,7 +72,7 @@ function Hero () {
   transitionDuration: '700ms',
   transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)'}}>
           <span className="text-white">SHUBHRATO </span>
-          <span style={{ color: '#22d3ee' }}>
+          <span style={{ color: '#a78bfa' }}>
             BADOLE
           </span>
         </h1>
