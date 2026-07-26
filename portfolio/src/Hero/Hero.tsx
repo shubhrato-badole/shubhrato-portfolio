@@ -20,14 +20,14 @@ interface MagneticButtonProps {
   children: React.ReactNode
 }
 
-function MagneticButton({ href, onClick, className, children }:MagneticButtonProps) {
+function MagneticButton({ href, onClick, className, children }: MagneticButtonProps) {
   const ref = useRef<HTMLAnchorElement>(null)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
   const springX = useSpring(x, { stiffness: 200, damping: 15 })
   const springY = useSpring(y, { stiffness: 200, damping: 15 })
 
-  const handleMouseMove = (e:any) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const el = ref.current
     if (!el) return
     const rect = el.getBoundingClientRect()
@@ -67,16 +67,16 @@ function Hero () {
     // so the glow orbs drift toward the mouse instead of snapping to it
     const mouseX = useMotionValue(0)
     const mouseY = useMotionValue(0)
-    const smoothX = useSpring(mouseX, { stiffness: 40, damping: 20 })
-    const smoothY = useSpring(mouseY, { stiffness: 40, damping: 20 })
+    const smoothX = useSpring(mouseX, { stiffness: 55, damping: 18 })
+    const smoothY = useSpring(mouseY, { stiffness: 55, damping: 18 })
 
-    const orb1X = useTransform(smoothX, [-1, 1], [-30, 30])
-    const orb1Y = useTransform(smoothY, [-1, 1], [-20, 20])
-    const orb2X = useTransform(smoothX, [-1, 1], [25, -25])
-    const orb2Y = useTransform(smoothY, [-1, 1], [15, -15])
+    const orb1X = useTransform(smoothX, [-1, 1], [-55, 55])
+    const orb1Y = useTransform(smoothY, [-1, 1], [-40, 40])
+    const orb2X = useTransform(smoothX, [-1, 1], [45, -45])
+    const orb2Y = useTransform(smoothY, [-1, 1], [30, -30])
 
     useEffect(() => {
-      const handleMouseMove = (e:any) => {
+      const handleMouseMove = (e: MouseEvent) => {
         const relX = (e.clientX / window.innerWidth) * 2 - 1
         const relY = (e.clientY / window.innerHeight) * 2 - 1
         mouseX.set(relX)
@@ -166,7 +166,7 @@ function Hero () {
         <div className="flex items-center justify-center gap-3 flex-wrap">
           <MagneticButton
             href="#projects"
-            onClick={(e:any) => {
+            onClick={(e) => {
               e.preventDefault()
               const target = document.querySelector('#projects')
               if (target) smoothScrollTo(target, 900, 80)
@@ -177,7 +177,7 @@ function Hero () {
           </MagneticButton>
           <MagneticButton
             href="#contact"
-            onClick={(e:any) => {
+            onClick={(e) => {
               e.preventDefault()
               const target = document.querySelector('#contact')
               if (target) smoothScrollTo(target, 900, 80)

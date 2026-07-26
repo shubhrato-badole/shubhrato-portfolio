@@ -12,7 +12,7 @@ function Canvas() {
 
     const dpr = window.devicePixelRatio || 1
 
-    
+   
     const stars = Array.from({ length: 150 }, () => ({
       xFrac: Math.random(),
       yFrac: Math.random(),
@@ -21,7 +21,7 @@ function Canvas() {
       speed: Math.random() * 0.001 + 0.0005,
     }))
 
-    // smoothed mouse position, -1..1 relative to viewport center
+    
     let mouseX = 0
     let mouseY = 0
     let smoothMouseX = 0
@@ -55,12 +55,12 @@ function Canvas() {
       t += 0.01
 
       
-      smoothMouseX += (mouseX - smoothMouseX) * 0.03
-      smoothMouseY += (mouseY - smoothMouseY) * 0.03
+      smoothMouseX += (mouseX - smoothMouseX) * 0.045
+      smoothMouseY += (mouseY - smoothMouseY) * 0.045
 
       stars.forEach(star => {
-        
-        const depthFactor = star.r * 14
+       
+        const depthFactor = star.r * 22
         const parallaxX = smoothMouseX * depthFactor
         const parallaxY = smoothMouseY * depthFactor
 
