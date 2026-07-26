@@ -40,3 +40,15 @@ body {
 .gradient-text--violet-cyan {
   background: linear-gradient(90deg, #a78bfa, #22d3ee);
 }
+
+@keyframes scanSweep {
+  0%   { top: 0%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes burstRing {
+  0%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(9); opacity: 0; }
+}
