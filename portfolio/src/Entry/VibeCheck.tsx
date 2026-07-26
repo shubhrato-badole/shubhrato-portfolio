@@ -55,7 +55,7 @@ export default function VibeCheck({ name, onDone }: Props) {
         }}
       />
 
-      {/* celebration burst rings, fire once when hired flips true */}
+     
       {hired && (
         <>
           {[0, 1, 2].map((i) => (
