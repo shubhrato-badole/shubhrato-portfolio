@@ -12,7 +12,7 @@ function Canvas() {
 
     const dpr = window.devicePixelRatio || 1
 
-
+    
     const stars = Array.from({ length: 150 }, () => ({
       xFrac: Math.random(),
       yFrac: Math.random(),
@@ -20,6 +20,18 @@ function Canvas() {
       alpha: Math.random() * 0.6 + 0.2,
       speed: Math.random() * 0.001 + 0.0005,
     }))
+
+    // smoothed mouse position, -1..1 relative to viewport center
+    let mouseX = 0
+    let mouseY = 0
+    let smoothMouseX = 0
+    let smoothMouseY = 0
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1
+      mouseY = (e.clientY / window.innerHeight) * 2 - 1
+    }
+    window.addEventListener('mousemove', handleMouseMove)
 
     function resize() {
       const w = window.innerWidth
@@ -42,10 +54,19 @@ function Canvas() {
       ctx!.clearRect(0, 0, w, h)
       t += 0.01
 
+      
+      smoothMouseX += (mouseX - smoothMouseX) * 0.03
+      smoothMouseY += (mouseY - smoothMouseY) * 0.03
+
       stars.forEach(star => {
-        const x = star.xFrac * w
-        const y = star.yFrac * h
-        const twinkle = star.alpha * (0.7 + 0.3 * Math.sin(t * star.speed * 1000 * x))
+        
+        const depthFactor = star.r * 14
+        const parallaxX = smoothMouseX * depthFactor
+        const parallaxY = smoothMouseY * depthFactor
+
+        const x = star.xFrac * w + parallaxX
+        const y = star.yFrac * h + parallaxY
+        const twinkle = star.alpha * (0.7 + 0.3 * Math.sin(t * star.speed * 1000 * (star.xFrac * w)))
         ctx!.beginPath()
         ctx!.arc(x, y, star.r, 0, Math.PI * 2)
         ctx!.fillStyle = `rgba(255,255,255,${twinkle})`
@@ -64,6 +85,7 @@ function Canvas() {
     return () => {
       cancelAnimationFrame(raf)
       window.removeEventListener('resize', handleResize)
+      window.removeEventListener('mousemove', handleMouseMove)
     }
   }, [])
 

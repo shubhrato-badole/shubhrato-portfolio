@@ -1,5 +1,6 @@
 import { UseVisitor } from "../context/VisitorContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Canvas  from    '../components/StarCanvas'
 import { smoothScrollTo } from "../components/scrollUtils";
 
@@ -12,11 +13,78 @@ const ROLES = [
   'Caffeine-Powered Debugger',
 ]
 
+interface MagneticButtonProps {
+  href: string
+  onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void
+  className: string
+  children: React.ReactNode
+}
+
+function MagneticButton({ href, onClick, className, children }:MagneticButtonProps) {
+  const ref = useRef<HTMLAnchorElement>(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const springX = useSpring(x, { stiffness: 200, damping: 15 })
+  const springY = useSpring(y, { stiffness: 200, damping: 15 })
+
+  const handleMouseMove = (e:any) => {
+    const el = ref.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const relX = e.clientX - (rect.left + rect.width / 2)
+    const relY = e.clientY - (rect.top + rect.height / 2)
+    x.set(relX * 0.35)
+    y.set(relY * 0.35)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      onClick={onClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x: springX, y: springY }}
+      className={className}
+    >
+      {children}
+    </motion.a>
+  )
+}
+
 function Hero () {
     const { visitorName } = UseVisitor()
     const [text, setText] = useState("");
     const [index, setIndex] = useState(0);
     const [deleting, setDeleting] = useState(false);
+
+    // raw cursor position relative to viewport center, smoothed with a spring
+    // so the glow orbs drift toward the mouse instead of snapping to it
+    const mouseX = useMotionValue(0)
+    const mouseY = useMotionValue(0)
+    const smoothX = useSpring(mouseX, { stiffness: 40, damping: 20 })
+    const smoothY = useSpring(mouseY, { stiffness: 40, damping: 20 })
+
+    const orb1X = useTransform(smoothX, [-1, 1], [-30, 30])
+    const orb1Y = useTransform(smoothY, [-1, 1], [-20, 20])
+    const orb2X = useTransform(smoothX, [-1, 1], [25, -25])
+    const orb2Y = useTransform(smoothY, [-1, 1], [15, -15])
+
+    useEffect(() => {
+      const handleMouseMove = (e:any) => {
+        const relX = (e.clientX / window.innerWidth) * 2 - 1
+        const relY = (e.clientY / window.innerHeight) * 2 - 1
+        mouseX.set(relX)
+        mouseY.set(relY)
+      }
+      window.addEventListener('mousemove', handleMouseMove)
+      return () => window.removeEventListener('mousemove', handleMouseMove)
+    }, [mouseX, mouseY])
 
     useEffect(() => {
   const currentText = ROLES[index]
@@ -49,8 +117,14 @@ function Hero () {
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
           <Canvas />
 
-         <div className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-cyan-500/10 blur-[80px] pointer-events-none" />
+         <motion.div
+           className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none"
+           style={{ x: orb1X, y: orb1Y }}
+         />
+      <motion.div
+        className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-cyan-500/10 blur-[80px] pointer-events-none"
+        style={{ x: orb2X, y: orb2Y }}
+      />
 
       <div className="absolute top-24 left-0 right-0 px-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -73,9 +147,8 @@ function Hero () {
         <h1 className="font-['Syne'] font-bold leading-none mb-5"
           style={{ fontSize: 'clamp(3rem, 9vw, 6.5rem)' }}>
           <span className="text-white">SHUBHRATO </span>
-          <span className="text-primary bg-gradient-to-r 
-              from-violet-400 to-cyan-400 bg-clip-text text-transparent">
-                BADOLE
+          <span style={{ color: '#22d3ee' }}>
+            BADOLE
           </span>
         </h1>
 
@@ -91,24 +164,28 @@ function Hero () {
         </p>
 
         <div className="flex items-center justify-center gap-3 flex-wrap">
-          <a href="#projects"
-            onClick={(e) => {
+          <MagneticButton
+            href="#projects"
+            onClick={(e:any) => {
               e.preventDefault()
               const target = document.querySelector('#projects')
               if (target) smoothScrollTo(target, 900, 80)
             }}
-            className="px-6 py-3 rounded-xl font-['Syne'] font-medium text-white text-sm bg-gradient-to-r from-violet-700 to-violet-500 border border-violet-500/50 hover:bg-violet-400/50 hover:border-violet-400/50 hover:-translate-y-1 transition-colors duration-500 ease-out">
+            className="px-6 py-3 rounded-xl font-['Syne'] font-medium text-white text-sm bg-gradient-to-r from-violet-700 to-violet-500 border border-violet-500/50 hover:bg-violet-400/50 hover:border-violet-400/50 transition-colors duration-500 ease-out inline-block"
+          >
             View My Work
-          </a>
-          <a href="#contact"
-            onClick={(e) => {
+          </MagneticButton>
+          <MagneticButton
+            href="#contact"
+            onClick={(e:any) => {
               e.preventDefault()
               const target = document.querySelector('#contact')
               if (target) smoothScrollTo(target, 900, 80)
             }}
-            className="px-6 py-3 rounded-xl font-['Syne'] font-medium text-violet-300 text-sm border border-violet-500/30 hover:border-violet-500/50 hover:bg-violet-500/10 hover:-translate-y-1 transition-colors duration-300">
+            className="px-6 py-3 rounded-xl font-['Syne'] font-medium text-violet-300 text-sm border border-violet-500/30 hover:border-violet-500/50 hover:bg-violet-500/10 transition-colors duration-300 inline-block"
+          >
             Hire Me
-          </a>
+          </MagneticButton>
         </div>
 
       </div>
