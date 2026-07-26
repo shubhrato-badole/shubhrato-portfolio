@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
 
 const STEPS = [
   { msg: "checking linkedin... last updated 3 years ago. bold strategy.",  },
@@ -54,9 +55,32 @@ export default function VibeCheck({ name, onDone }: Props) {
         }}
       />
 
+      {/* celebration burst rings, fire once when hired flips true */}
+      {hired && (
+        <>
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              className="absolute rounded-full pointer-events-none"
+              style={{
+                width: 40, height: 40,
+                top: "50%", left: "50%",
+                border: "1.5px solid rgba(74,222,128,0.5)",
+                transform: "translate(-50%, -50%) scale(1)",
+                opacity: 1,
+                animation: `burstRing 1.1s ease-out forwards`,
+                animationDelay: `${i * 0.15}s`,
+              }}
+            />
+          ))}
+        </>
+      )}
 
-      <div
+      <motion.div
         className="relative z-10 w-full"
+        initial={{ opacity: 0, scale: 0.92, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         style={{
           maxWidth: 460,
           background: "rgba(255,255,255,0.02)",
@@ -66,9 +90,21 @@ export default function VibeCheck({ name, onDone }: Props) {
           borderRadius: 20,
           padding: "32px 28px",
           backdropFilter: "blur(10px)",
-          transition: "border-color 1.5s",
+          overflow: "hidden",
         }}
       >
+        {/* scanning laser sweep, only while actively scanning */}
+        {!hired && (
+          <div
+            className="absolute left-0 right-0 pointer-events-none"
+            style={{
+              height: 2,
+              background: "linear-gradient(90deg, transparent, #A78BFA, transparent)",
+              boxShadow: "0 0 12px 2px rgba(167,139,250,0.6)",
+              animation: "scanSweep 2.4s ease-in-out infinite",
+            }}
+          />
+        )}
 
         <div
           style={{
@@ -222,7 +258,10 @@ export default function VibeCheck({ name, onDone }: Props) {
             textAlign: "center",
           }}
         >
-          <div
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={hired ? { scale: 1, opacity: 1 } : {}}
+            transition={{ type: "spring", stiffness: 300, damping: 12, delay: 0.3 }}
             style={{
               fontFamily: "'Syne', sans-serif",
               fontWeight: 700,
@@ -233,7 +272,7 @@ export default function VibeCheck({ name, onDone }: Props) {
             }}
           >
             CANDIDATE HIRED ✓
-          </div>
+          </motion.div>
           <div
             style={{
               fontFamily: "monospace",
@@ -244,7 +283,7 @@ export default function VibeCheck({ name, onDone }: Props) {
             hr will not be in touch. they never are.
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
