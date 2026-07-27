@@ -121,7 +121,7 @@ export default function ChatWidget() {
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             style={{
               width: 400,
-              maxHeight: 600,
+              maxHeight: 700,
               background: '#0a0118',
               border: '1px solid rgba(139,92,246,0.25)',
               borderRadius: 16,
