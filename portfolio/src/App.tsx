@@ -7,6 +7,7 @@ import Skills from "./Skills/skills"
 import Projects from "./Project/Project";
 import Contact from "./Contact/Contact"
 import Footer from "./Footer/Footer"
+import ChatWidget from './components/ChatWidget'
 
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
  
  <div className="min-h-screen bg-[#030010]">
       <Navbar />
+      <ChatWidget />
       <Hero />
       <About />
       <Skills />
