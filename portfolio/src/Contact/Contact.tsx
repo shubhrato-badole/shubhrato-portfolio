@@ -23,7 +23,6 @@ const socials = [
 ];
 
 const inputClass = `w-full bg-transparent font-body text-white outline-none py-3 transition-colors placeholder:text-slate-700`
-// fontSize bumped to 16px minimum — under 16px triggers iOS Safari's auto-zoom on input focus
 const inputStyle = { borderBottom: '1px solid rgba(255,255,255,0.1)', fontSize: '16px' }
 const focusStyle = 'focus:border-primary'
 
