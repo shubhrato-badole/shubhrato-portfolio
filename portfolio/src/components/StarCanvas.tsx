@@ -12,7 +12,7 @@ function Canvas() {
 
     const dpr = window.devicePixelRatio || 1
 
-   
+    // stars stored as fractions of width/height so they reposition correctly on resize
     const stars = Array.from({ length: 150 }, () => ({
       xFrac: Math.random(),
       yFrac: Math.random(),
@@ -21,7 +21,7 @@ function Canvas() {
       speed: Math.random() * 0.001 + 0.0005,
     }))
 
-    
+    // smoothed mouse position, -1..1 relative to viewport center
     let mouseX = 0
     let mouseY = 0
     let smoothMouseX = 0
@@ -54,13 +54,14 @@ function Canvas() {
       ctx!.clearRect(0, 0, w, h)
       t += 0.01
 
-      
-      smoothMouseX += (mouseX - smoothMouseX) * 0.045
-      smoothMouseY += (mouseY - smoothMouseY) * 0.045
+      // ease the smoothed mouse position toward the raw target each frame,
+      // giving the parallax a soft trailing feel instead of snapping
+      smoothMouseX += (mouseX - smoothMouseX) * 0.08
+      smoothMouseY += (mouseY - smoothMouseY) * 0.08
 
       stars.forEach(star => {
-       
-        const depthFactor = star.r * 22
+        // bigger stars = "closer" = shift more, giving a real sense of depth
+        const depthFactor = star.r * 45
         const parallaxX = smoothMouseX * depthFactor
         const parallaxY = smoothMouseY * depthFactor
 

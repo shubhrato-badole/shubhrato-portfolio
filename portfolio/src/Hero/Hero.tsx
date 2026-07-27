@@ -67,13 +67,13 @@ function Hero () {
     // so the glow orbs drift toward the mouse instead of snapping to it
     const mouseX = useMotionValue(0)
     const mouseY = useMotionValue(0)
-    const smoothX = useSpring(mouseX, { stiffness: 55, damping: 18 })
-    const smoothY = useSpring(mouseY, { stiffness: 55, damping: 18 })
+    const smoothX = useSpring(mouseX, { stiffness: 65, damping: 16 })
+    const smoothY = useSpring(mouseY, { stiffness: 65, damping: 16 })
 
-    const orb1X = useTransform(smoothX, [-1, 1], [-55, 55])
-    const orb1Y = useTransform(smoothY, [-1, 1], [-40, 40])
-    const orb2X = useTransform(smoothX, [-1, 1], [45, -45])
-    const orb2Y = useTransform(smoothY, [-1, 1], [30, -30])
+    const orb1X = useTransform(smoothX, [-1, 1], [-80, 80])
+    const orb1Y = useTransform(smoothY, [-1, 1], [-60, 60])
+    const orb2X = useTransform(smoothX, [-1, 1], [65, -65])
+    const orb2Y = useTransform(smoothY, [-1, 1], [45, -45])
 
     useEffect(() => {
       const handleMouseMove = (e: MouseEvent) => {
