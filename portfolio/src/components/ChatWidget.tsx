@@ -43,10 +43,10 @@ export default function ChatWidget() {
      
       setTimeout(() => {
         setNudgeLines([])
-      }, combo.length * 1300 + 9000)
+      }, combo.length * 1300 + 8500)
     }
 
-    const firstTimer = setTimeout(showNudge, 12000)
+    const firstTimer = setTimeout(showNudge, 10000)
     const interval = setInterval(showNudge, 30000)
 
     return () => {
