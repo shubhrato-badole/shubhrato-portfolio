@@ -43,11 +43,11 @@ export default function ChatWidget() {
      
       setTimeout(() => {
         setNudgeLines([])
-      }, combo.length * 1300 + 5000)
+      }, combo.length * 1300 + 10000)
     }
 
-    const firstTimer = setTimeout(showNudge, 15000)
-    const interval = setInterval(showNudge, 40000)
+    const firstTimer = setTimeout(showNudge, 10000)
+    const interval = setInterval(showNudge, 30000)
 
     return () => {
       clearTimeout(firstTimer)
@@ -92,10 +92,10 @@ export default function ChatWidget() {
                   background: '#0a0118',
                   border: '1px solid rgba(255,255,255,0.1)',
                   borderRadius: '14px 14px 2px 14px',
-                  padding: '10px 14px',
-                  maxWidth: 240,
+                  padding: '14px 18px',
+                  maxWidth: 300,
                   cursor: 'pointer',
-                  fontSize: 13,
+                  fontSize: 15,
                   color: '#e2e8f0',
                   fontFamily: "'Syne', sans-serif",
                 }}
@@ -116,8 +116,8 @@ export default function ChatWidget() {
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              width: 320,
-              maxHeight: 420,
+              width: 400,
+              maxHeight: 600,
               background: '#0a0118',
               border: '1px solid rgba(139,92,246,0.25)',
               borderRadius: 16,
@@ -142,7 +142,7 @@ export default function ChatWidget() {
               </button>
             </div>
 
-            <div style={{ flex: 1, overflowY: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 10, maxHeight: 260 }}>
+            <div style={{ flex: 1, overflowY: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 10, maxHeight: 420 }}>
               {messages.map((m, i) => (
                 <div
                   key={i}
@@ -153,7 +153,7 @@ export default function ChatWidget() {
                     borderRadius: m.from === 'user' ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
                     padding: '8px 12px',
                     maxWidth: '80%',
-                    fontSize: 13,
+                    fontSize: 14,
                     color: '#e2e8f0',
                   }}
                 >
