@@ -43,11 +43,11 @@ export default function ChatWidget() {
      
       setTimeout(() => {
         setNudgeLines([])
-      }, combo.length * 1300 + 10000)
+      }, combo.length * 1300 + 8000)
     }
 
     const firstTimer = setTimeout(showNudge, 10000)
-    const interval = setInterval(showNudge, 30000)
+    const interval = setInterval(showNudge, 20000)
 
     return () => {
       clearTimeout(firstTimer)
@@ -61,17 +61,21 @@ export default function ChatWidget() {
     if (nudgeTimeoutRef.current) clearTimeout(nudgeTimeoutRef.current)
   }
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return
     setMessages((prev) => [...prev, { from: 'user', text: input }])
     setInput('')
-  
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { from: 'bot', text: "still wiring up my brain for real answers — ask me again soon." },
-      ])
-    }, 700)
+    try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: input }),
+        })
+        const data = await res.json()
+        setMessages((prev) => [...prev, { from: 'bot', text: data.reply }])
+      } catch {
+        setMessages((prev) => [...prev, { from: 'bot', text: "connection hiccup — try again?" }])
+      }
   }
 
   return (
