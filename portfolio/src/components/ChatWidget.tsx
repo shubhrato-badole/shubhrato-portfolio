@@ -58,8 +58,8 @@ export default function ChatWidget() {
       }, combo.length * 1900 + 8500)
     }
 
-    const firstTimer = setTimeout(showNudge, 10000)
-    const interval = setInterval(showNudge, 30000)
+    const firstTimer = setTimeout(showNudge, 11000)
+    const interval = setInterval(showNudge, 35000)
 
     return () => {
       clearTimeout(firstTimer)
