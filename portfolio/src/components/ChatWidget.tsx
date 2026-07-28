@@ -7,6 +7,8 @@ const combos: string[][] = [
   ["ngl I've been watching you scroll for a while now.", "just talk to me."],
   ["okay fine, I'll go first.", "wanna gossip about Shubhrato?"],
   ["still scrolling huh?", "I promise I'm more interesting than the portfolio."],
+  ["you've read this far?", "respect. now say something back."],
+  ["want to know a secret about Shubhrato?", "let's talk."],
 ]
 
 function getNextCombo(): string[] {
@@ -25,25 +27,35 @@ export default function ChatWidget() {
   ])
   const [input, setInput] = useState('')
   const nudgeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  
+  // auto-scroll to the latest message whenever the message list changes
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+  // nudge popups: stop showing once the visitor has seen every combo once this session
   useEffect(() => {
     if (open) return
 
     const showNudge = () => {
+      const shownCount = parseInt(sessionStorage.getItem('nudgeShownCount') || '0', 10)
+      if (shownCount >= combos.length) return // seen them all this session, stop nudging
+
+      sessionStorage.setItem('nudgeShownCount', String(shownCount + 1))
+
       const combo = getNextCombo()
       setNudgeLines([])
 
       combo.forEach((_, i) => {
         setTimeout(() => {
           setNudgeLines((prev) => [...prev, combo[i]])
-        }, i * 1300)
+        }, i * 1900)
       })
 
-     
       setTimeout(() => {
         setNudgeLines([])
-      }, combo.length * 1300 + 8500)
+      }, combo.length * 1900 + 8500)
     }
 
     const firstTimer = setTimeout(showNudge, 10000)
@@ -66,24 +78,27 @@ export default function ChatWidget() {
     setMessages((prev) => [...prev, { from: 'user', text: input }])
     setInput('')
     try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: input }),
-        })
-        const data = await res.json()
-        setMessages((prev) => [...prev, { from: 'bot', text: data.reply }])
-      } catch {
-        setMessages((prev) => [...prev, { from: 'bot', text: "connection hiccup — try again?" }])
-      }
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input }),
+      })
+      const data = await res.json()
+      setMessages((prev) => [...prev, { from: 'bot', text: data.reply }])
+    } catch {
+      setMessages((prev) => [...prev, { from: 'bot', text: "connection hiccup — try again?" }])
+    }
   }
 
   return (
-    <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 100 }}>
-     
+    <div style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 100 }}>
+      {/* nudge bubbles */}
       <AnimatePresence>
         {!open && nudgeLines.length > 0 && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 12, alignItems: 'flex-end' }}>
+          <div style={{
+            display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 12,
+            alignItems: 'flex-end',
+          }}>
             {nudgeLines.map((line, i) => (
               <motion.div
                 key={`${line}-${i}`}
@@ -98,7 +113,7 @@ export default function ChatWidget() {
                   border: '1px solid rgba(255,255,255,0.1)',
                   borderRadius: '14px 14px 2px 14px',
                   padding: '14px 18px',
-                  maxWidth: 300,
+                  maxWidth: 'min(300px, calc(100vw - 64px))',
                   cursor: 'pointer',
                   fontSize: 15,
                   color: '#e2e8f0',
@@ -112,7 +127,7 @@ export default function ChatWidget() {
         )}
       </AnimatePresence>
 
-     
+      {/* chat panel — responsive width, capped height that also shrinks on short viewports */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -121,8 +136,8 @@ export default function ChatWidget() {
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              width: 400,
-              maxHeight: 700,
+              width: 'min(400px, calc(100vw - 32px))',
+              maxHeight: 'min(700px, calc(100vh - 120px))',
               background: '#0a0118',
               border: '1px solid rgba(139,92,246,0.25)',
               borderRadius: 16,
@@ -135,6 +150,7 @@ export default function ChatWidget() {
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.08)',
+              flexShrink: 0,
             }}>
               <span style={{ fontFamily: 'monospace', fontSize: 11, color: '#94a3b8' }}>
                 ask shubhrato's ai
@@ -147,7 +163,11 @@ export default function ChatWidget() {
               </button>
             </div>
 
-            <div style={{ flex: 1, overflowY: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 10, maxHeight: 420 }}>
+            <div style={{
+              flex: 1, overflowY: 'auto', padding: 16,
+              display: 'flex', flexDirection: 'column', gap: 10,
+              minHeight: 200,
+            }}>
               {messages.map((m, i) => (
                 <div
                   key={i}
@@ -165,9 +185,14 @@ export default function ChatWidget() {
                   {m.text}
                 </div>
               ))}
+              {/* invisible anchor scrolled into view on every new message */}
+              <div ref={messagesEndRef} />
             </div>
 
-            <div style={{ display: 'flex', gap: 8, padding: 12, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{
+              display: 'flex', gap: 8, padding: 12,
+              borderTop: '1px solid rgba(255,255,255,0.08)', flexShrink: 0,
+            }}>
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -179,15 +204,16 @@ export default function ChatWidget() {
                   border: '1px solid rgba(255,255,255,0.08)',
                   borderRadius: 99,
                   padding: '8px 14px',
-                  fontSize: 12,
+                  fontSize: 16, // 16px minimum avoids iOS auto-zoom on focus
                   color: '#e2e8f0',
                   outline: 'none',
+                  minWidth: 0,
                 }}
               />
               <button
                 onClick={handleSend}
                 style={{
-                  width: 32, height: 32, borderRadius: '50%', background: '#8B5CF6',
+                  width: 36, height: 36, borderRadius: '50%', background: '#8B5CF6',
                   border: 'none', color: 'white', cursor: 'pointer', flexShrink: 0,
                 }}
               >
@@ -198,14 +224,14 @@ export default function ChatWidget() {
         )}
       </AnimatePresence>
 
-    
+      {/* launcher */}
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <button
           onClick={() => (open ? setOpen(false) : handleOpen())}
           style={{
             width: 52, height: 52, borderRadius: '50%', background: '#8B5CF6',
             border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', fontSize: 22, color: 'white',
+            cursor: 'pointer', fontSize: 22, color: 'white', flexShrink: 0,
           }}
           aria-label="Open chat"
         >
