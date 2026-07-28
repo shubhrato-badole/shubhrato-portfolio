@@ -38,26 +38,25 @@ function Skills() {
  
   const filteredSkills = category === 'all' ? SKILLS : SKILLS.filter(skill => skill.category === category)
  
+  
   useEffect(() => {
-    const isTouchDevice = window.matchMedia('(hover: none)').matches
-    if (!isTouchDevice || hasAutoPlayed) return
+    if (hasAutoPlayed) return
  
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !hasAutoPlayed) {
           setHasAutoPlayed(true)
-          filteredSkills.forEach((skill, i) => {
-            setTimeout(() => {
-              setAutoFlipped((prev) => new Set(prev).add(skill.name))
-            }, i * 150)
-            setTimeout(() => {
-              setAutoFlipped((prev) => {
-                const next = new Set(prev)
-                next.delete(skill.name)
-                return next
-              })
-            }, i * 150 + 1200)
-          })
+          const first = filteredSkills[0]
+          if (!first) return
+          // only the first card auto-flips once, as a hint — everything else is click-only
+          setAutoFlipped((prev) => new Set(prev).add(first.name))
+          setTimeout(() => {
+            setAutoFlipped((prev) => {
+              const next = new Set(prev)
+              next.delete(first.name)
+              return next
+            })
+          }, 1500)
         }
       },
       { threshold: 0.3 }
@@ -65,7 +64,7 @@ function Skills() {
  
     if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [hasAutoPlayed])
  
   const toggleTap = (name: string) => {
