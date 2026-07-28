@@ -26,16 +26,62 @@ const SKILLS = [
 ]
 
 
+
 type Category = 'all' | 'frontend' | 'backend' | 'ai' | 'tools'
  
 function Skills() {
   const [category, setCategory] = useState<Category>('all')
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null)
+  const [autoFlipped, setAutoFlipped] = useState<Set<string>>(new Set())
+  const [hasAutoPlayed, setHasAutoPlayed] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
  
   const filteredSkills = category === 'all' ? SKILLS : SKILLS.filter(skill => skill.category === category)
  
+  // on touch devices, auto-flip each card briefly in sequence the first time
+  // the section scrolls into view — mobile has no hover, so without this
+  // visitors would never see the level side of any card
+  useEffect(() => {
+    const isTouchDevice = window.matchMedia('(hover: none)').matches
+    if (!isTouchDevice || hasAutoPlayed) return
+ 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !hasAutoPlayed) {
+          setHasAutoPlayed(true)
+          filteredSkills.forEach((skill, i) => {
+            setTimeout(() => {
+              setAutoFlipped((prev) => new Set(prev).add(skill.name))
+            }, i * 150)
+            setTimeout(() => {
+              setAutoFlipped((prev) => {
+                const next = new Set(prev)
+                next.delete(skill.name)
+                return next
+              })
+            }, i * 150 + 1200)
+          })
+        }
+      },
+      { threshold: 0.3 }
+    )
+ 
+    if (sectionRef.current) observer.observe(sectionRef.current)
+    return () => observer.disconnect()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasAutoPlayed])
+ 
+  const toggleTap = (name: string) => {
+    setAutoFlipped((prev) => {
+      const next = new Set(prev)
+      if (next.has(name)) next.delete(name)
+      else next.add(name)
+      return next
+    })
+  }
+ 
   return (
-    <section id="skills" className="max-w-6xl mx-auto px-6 py-24">
+    <section id="skills" ref={sectionRef} className="max-w-6xl mx-auto px-6 py-24">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -75,13 +121,14 @@ function Skills() {
  
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {filteredSkills.map((skill, i) => {
-          const isFlipped = hoveredSkill === skill.name
+          const isFlipped = hoveredSkill === skill.name || autoFlipped.has(skill.name)
           return (
             <motion.div key={skill.name}
               className="relative"
               style={{ perspective: '800px', height: '110px' }}
               onMouseEnter={() => setHoveredSkill(skill.name)}
               onMouseLeave={() => setHoveredSkill(null)}
+              onClick={() => toggleTap(skill.name)}
               initial={{ opacity: 0, y: 24, scale: 0.9 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: '-40px' }}
@@ -138,3 +185,4 @@ function Skills() {
 }
  
 export default Skills;
+ 
