@@ -10,9 +10,9 @@ const facts = [
 ]
 
 const aboutLines = [
-  "I'm a Full Stack Developer passionate about crafting digital experiences that are both beautiful and technically solid.",
-  "From pixel-perfect UIs to scalable backend systems — I care about every layer.",
-  "When I'm not coding, I'm exploring cybersecurity, contributing to open source, or breaking things in my homelab to understand how they work.",
+  "I build AI systems that think before they answer.",
+  "I specialize in AI Agents, Agentic AI, and Retrieval-Augmented Generation (RAG). I built ResearchMind AI, engineering its LangGraph workflow, hybrid search, reranking pipeline, and production backend from scratch.",
+  "Before building AI systems, I worked with the State Cyber Crime Investigation Unit, Government of Maharashtra, investigating cyber fraud and digital evidence.",
 ]
 
 const codeLines: [string, string][] = [
@@ -126,7 +126,7 @@ function About() {
             transition={{ duration: 0.45, delay: 0.15 + aboutLines.length * lineDelay, ease: [0.22, 1, 0.36, 1] }}
             className="text-purple-400 mt-6"
           >
-            I believe the best code is code that solves real problems for real people — elegantly.
+         I believe great software solves real problems, and great AI knows when to ask before it acts.
           </motion.p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-10" style={{ perspective: '600px' }}>
