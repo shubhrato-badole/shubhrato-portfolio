@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const SKILLS = [
@@ -38,9 +38,6 @@ function Skills() {
  
   const filteredSkills = category === 'all' ? SKILLS : SKILLS.filter(skill => skill.category === category)
  
-  // on touch devices, auto-flip each card briefly in sequence the first time
-  // the section scrolls into view — mobile has no hover, so without this
-  // visitors would never see the level side of any card
   useEffect(() => {
     const isTouchDevice = window.matchMedia('(hover: none)').matches
     if (!isTouchDevice || hasAutoPlayed) return
