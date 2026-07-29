@@ -174,8 +174,7 @@ function Hero() {
         </div>
 
         <p className="text-slate-400 max-w-lg mx-auto mb-10 leading-relaxed text-[15px]">
-          I build fast, beautiful, and secure web apps. Passionate about clean
-          code, great UX, and cybersecurity.
+         I build AI agents and RAG systems that solve real problems — not just demos.
         </p>
 
         <div className="flex items-center justify-center gap-3 flex-wrap">
