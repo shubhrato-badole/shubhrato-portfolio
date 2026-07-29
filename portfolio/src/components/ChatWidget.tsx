@@ -58,8 +58,8 @@ export default function ChatWidget() {
       }, combo.length * 1900 + 8500)
     }
 
-    const firstTimer = setTimeout(showNudge, 11000)
-    const interval = setInterval(showNudge, 35000)
+    const firstTimer = setTimeout(showNudge, 10000)
+    const interval = setInterval(showNudge, 30000)
 
     return () => {
       clearTimeout(firstTimer)
@@ -75,13 +75,16 @@ export default function ChatWidget() {
 
   const handleSend = async () => {
     if (!input.trim()) return
-    setMessages((prev) => [...prev, { from: 'user', text: input }])
+    const updatedMessages = [...messages, { from: 'user' as const, text: input }]
+    setMessages(updatedMessages)
     setInput('')
     try {
+      // skip the hardcoded greeting at index 0 — Gemini's history must start with a user turn
+      const historyForApi = updatedMessages.slice(1)
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ messages: historyForApi }),
       })
       const data = await res.json()
       setMessages((prev) => [...prev, { from: 'bot', text: data.reply }])
