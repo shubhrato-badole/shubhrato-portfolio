@@ -9,11 +9,25 @@ const facts = [
   { icon: '🔐', label: 'Background', value: 'Cybercrime Investigation' },
 ]
 
-const aboutLines = [
-  "I build AI systems that think before they answer.",
-  "I specialize in AI Agents, Agentic AI, and Retrieval-Augmented Generation (RAG). I built ResearchMind AI, engineering its LangGraph workflow, hybrid search, reranking pipeline, and production backend from scratch.",
-  "Before building AI systems, I worked with the State Cyber Crime Investigation Unit, Government of Maharashtra, investigating cyber fraud and digital evidence.",
+// each entry is a paragraph broken into its own lines/sentences so it can
+// reveal line-by-line instead of fading in as one solid block
+const aboutLines: string[][] = [
+  ["I build AI systems that think before they answer."],
+  [
+    "I specialize in AI Agents, Agentic AI, and Retrieval-Augmented Generation (RAG).",
+    "I built ResearchMind AI, engineering its LangGraph workflow, hybrid search, reranking pipeline, and production backend from scratch.",
+  ],
+  [
+    "Before building AI systems, I worked with the State Cyber Crime Investigation Unit, Government of Maharashtra,",
+    "investigating cyber fraud and digital evidence.",
+  ],
 ]
+
+// flatten to a single ordered list of lines so every line across every
+// paragraph gets a strictly increasing stagger delay, same idea as codeLines
+const flatLines = aboutLines.flatMap((para, paraIdx) =>
+  para.map((text, lineIdx) => ({ text, paraIdx, lineIdx, isParaEnd: lineIdx === para.length - 1 }))
+)
 
 const codeLines: [string, string][] = [
   ['#E2E8F0', 'const developer = {'],
@@ -106,24 +120,39 @@ function About() {
             <span style={{ color: '#a78bfa' }}>I build things.</span>
           </motion.h2>
 
-          {aboutLines.map((line, i) => (
-            <motion.p
-              key={i}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.45, delay: 0.15 + i * lineDelay, ease: [0.22, 1, 0.36, 1] }}
-              className="text-slate-400 mt-4 first:mt-0"
-            >
-              {line}
-            </motion.p>
+          {/* each sentence/line reveals on its own, staggered, instead of the
+              whole paragraph fading in as one block */}
+          {aboutLines.map((para, paraIdx) => (
+            <p key={paraIdx} className="text-slate-400 mt-4 first:mt-0">
+              {para.map((text, lineIdx) => {
+                const flatIdx = flatLines.findIndex(
+                  l => l.paraIdx === paraIdx && l.lineIdx === lineIdx
+                )
+                return (
+                  <motion.span
+                    key={lineIdx}
+                    initial={{ opacity: 0, x: -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{
+                      duration: 0.4,
+                      delay: 0.15 + flatIdx * lineDelay,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="block"
+                  >
+                    {text}
+                  </motion.span>
+                )
+              })}
+            </p>
           ))}
 
           <motion.p
             initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.45, delay: 0.15 + aboutLines.length * lineDelay, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.45, delay: 0.15 + flatLines.length * lineDelay, ease: [0.22, 1, 0.36, 1] }}
             className="text-purple-400 mt-6"
           >
          I believe great software solves real problems, and great AI knows when to ask before it acts.
@@ -134,7 +163,7 @@ function About() {
               <FactCard
                 key={fact.icon}
                 fact={fact}
-                delay={0.15 + (aboutLines.length + 1) * lineDelay + i * 0.08}
+                delay={0.15 + (flatLines.length + 1) * lineDelay + i * 0.08}
               />
             ))}
           </div>
