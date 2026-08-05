@@ -31,6 +31,7 @@ export default function ChatWidget() {
   const [isTyping, setIsTyping] = useState(false)
 
 
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
@@ -174,8 +175,11 @@ export default function ChatWidget() {
               minHeight: 200,
             }}>
               {messages.map((m, i) => (
-                <div
+                <motion.div
                   key={i}
+                  initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                   style={{
                     alignSelf: m.from === 'user' ? 'flex-end' : 'flex-start',
                     background: m.from === 'user' ? 'rgba(139,92,246,0.15)' : 'rgba(255,255,255,0.03)',
@@ -188,18 +192,22 @@ export default function ChatWidget() {
                   }}
                 >
                   {m.text}
-                </div>
+                </motion.div>
               ))}
               {isTyping && (
-                <div style={{
-                  alignSelf: 'flex-start',
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  borderRadius: '12px 12px 12px 2px',
-                  padding: '10px 14px',
-                  display: 'flex',
-                  gap: 4,
-                }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{
+                    alignSelf: 'flex-start',
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    borderRadius: '12px 12px 12px 2px',
+                    padding: '10px 14px',
+                    display: 'flex',
+                    gap: 4,
+                  }}
+                >
                   {[0, 1, 2].map((i) => (
                     <span
                       key={i}
@@ -211,7 +219,7 @@ export default function ChatWidget() {
                       }}
                     />
                   ))}
-                </div>
+                </motion.div>
               )}
               <div ref={messagesEndRef} />
             </div>
