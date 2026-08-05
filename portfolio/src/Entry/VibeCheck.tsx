@@ -1,47 +1,81 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 
 const STEPS = [
-  { msg: "checking linkedin... last updated 3 years ago. bold strategy.",  },
-  { msg: 'googled "center a div" this week... we don\'t judge.',  },
-  { msg: "coffee intake: 4 cups before 9am. this is fine. this is fine.", },
-  { msg: "side projects found: 14. shipped: 0. respectable.", },
-  { msg: "vibe certified. welcome to the good side.", },
+  { msg: "checking linkedin... last updated 3 years ago. bold strategy." },
+  { msg: 'googled "center a div" this week... we don\'t judge.' },
+  { msg: "coffee intake: 4 cups before 9am. this is fine. this is fine." },
+  { msg: "side projects found: 14. shipped: 0. respectable." },
+  { msg: "vibe certified. welcome to the good side." },
 ]
+
+const TOTAL_MS = 800 + STEPS.length * 1300 + 900 // keep step reveal + progress bar in sync
 
 interface Props { name: string; onDone: () => void }
 
 export default function VibeCheck({ name, onDone }: Props) {
   const [current, setCurrent] = useState(0)
-  const [prog,    setProg]    = useState(0)
-  const [hired,   setHired]   = useState(false)
+  const [typed, setTyped] = useState<string[]>(Array(STEPS.length).fill(""))
+  const [prog, setProg] = useState(0)
+  const [hired, setHired] = useState(false)
+  const [glitching, setGlitching] = useState(false)
+  const [exiting, setExiting] = useState(false)
+  const typeTimers = useRef<ReturnType<typeof setTimeout>[]>([])
+
+  // types out one step's message character by character, then reveals the next step
+  function typeStep(i: number) {
+    if (i >= STEPS.length) return
+    setCurrent(i + 1)
+    const msg = STEPS[i].msg
+    let charIdx = 0
+    const tick = () => {
+      charIdx++
+      setTyped(prev => {
+        const next = [...prev]
+        next[i] = msg.slice(0, charIdx)
+        return next
+      })
+      if (charIdx < msg.length) {
+        typeTimers.current.push(setTimeout(tick, 16))
+      } else {
+        typeTimers.current.push(setTimeout(() => typeStep(i + 1), 380))
+      }
+    }
+    tick()
+  }
 
   useEffect(() => {
-    STEPS.forEach((_, i) => {
-      setTimeout(() => setCurrent(i + 1), 800 + i * 1000)
-    })
+    typeTimers.current.push(setTimeout(() => typeStep(0), 700))
 
-    const total = 800 + STEPS.length * 1200 + 600
     let elapsed = 0
     const bar = setInterval(() => {
       elapsed += 30
-      setProg(Math.min(100, Math.round((elapsed / total) * 100)))
-      if (elapsed >= total) {
+      setProg(Math.min(100, Math.round((elapsed / TOTAL_MS) * 100)))
+      if (elapsed >= TOTAL_MS) {
         clearInterval(bar)
-        setHired(true)
-        setTimeout(onDone, 2000)
+        setGlitching(true)
+        setTimeout(() => {
+          setGlitching(false)
+          setHired(true)
+        }, 450) // glitch flicker window before settling green
+        setTimeout(() => setExiting(true), 450 + 1900) // hold on HIRED, then start exit fade
+        setTimeout(onDone, 450 + 1900 + 900) // unmount only after exit transition finishes
       }
     }, 30)
 
-    return () => clearInterval(bar)
+    return () => {
+      clearInterval(bar)
+      typeTimers.current.forEach(clearTimeout)
+    }
   }, [])
 
   return (
-    <div
+    <motion.div
       className="min-h-screen flex items-center justify-center px-4"
       style={{ background: "#04010f" }}
+      animate={{ opacity: exiting ? 0 : 1, scale: exiting ? 0.94 : 1, y: exiting ? -16 : 0 }}
+      transition={{ duration: 0.9, ease: [0.4, 0.2, 0.2, 1] }}
     >
-
       <div
         className="absolute rounded-full pointer-events-none"
         style={{
@@ -55,7 +89,6 @@ export default function VibeCheck({ name, onDone }: Props) {
         }}
       />
 
-     
       {hired && (
         <>
           {[0, 1, 2].map((i) => (
@@ -119,11 +152,10 @@ export default function VibeCheck({ name, onDone }: Props) {
           }}
         >
           <span>shubhrato corp™</span>
-          <span style={{ color: hired ? "#4ADE80" : "#8B5CF6" }}>
+          <span style={{ color: hired ? "#4ADE80" : "#8B5CF6", transition: "color 1s" }}>
             {hired ? "● approved" : "● scanning"}
           </span>
         </div>
-
 
         <div style={{ marginBottom: 28, textAlign: "center" }}>
           <div
@@ -151,13 +183,15 @@ export default function VibeCheck({ name, onDone }: Props) {
               maxWidth: "100%",
               display: "inline-block",
               color: hired ? "#4ADE80" : "#ffffff",
-              transition: "color 1.5s",
+              textShadow: glitching
+                ? "2px 0 #ff3b3b, -2px 0 #22d3ee"
+                : "none",
+              transition: glitching ? "none" : "color 1.5s, text-shadow 0.3s",
             }}
           >
             {name.toUpperCase()}
           </div>
         </div>
-
 
         <div
           style={{
@@ -166,7 +200,6 @@ export default function VibeCheck({ name, onDone }: Props) {
             marginBottom: 24,
           }}
         />
-
 
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
           {STEPS.map((step, i) => {
@@ -191,7 +224,7 @@ export default function VibeCheck({ name, onDone }: Props) {
                     flexShrink: 0,
                     marginTop: 1,
                     color: done ? "#4ADE80" : active ? "#A78BFA" : "#334155",
-                    transition: "color 0.5s",
+                    transition: "color 0.7s ease",
                   }}
                 >
                   {done ? "✓" : active ? "◎" : "○"}
@@ -202,10 +235,10 @@ export default function VibeCheck({ name, onDone }: Props) {
                     fontSize: 13,
                     lineHeight: 1.6,
                     color: done ? "#475569" : active ? "#E2E8F0" : "#1a1a2e",
-                    transition: "color 0.5s",
+                    transition: "color 0.7s ease",
                   }}
                 >
-                   {step.msg}
+                  {active || done ? typed[i] : ""}
                 </span>
               </div>
             )
@@ -234,7 +267,6 @@ export default function VibeCheck({ name, onDone }: Props) {
           />
         </div>
 
-
         <div
           style={{
             display: "flex",
@@ -246,7 +278,6 @@ export default function VibeCheck({ name, onDone }: Props) {
         >
           <span>{hired ? "✓ cleared" : `${prog}% · please hold`}</span>
         </div>
-
 
         <div
           style={{
@@ -284,6 +315,6 @@ export default function VibeCheck({ name, onDone }: Props) {
           </div>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   )
 }
