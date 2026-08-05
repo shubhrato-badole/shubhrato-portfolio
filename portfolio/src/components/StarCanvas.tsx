@@ -12,7 +12,7 @@ function Canvas() {
 
     const dpr = window.devicePixelRatio || 1
 
-    // stars stored as fractions of width/height so they reposition correctly on resize
+    
     const stars = Array.from({ length: 150 }, () => ({
       xFrac: Math.random(),
       yFrac: Math.random(),
