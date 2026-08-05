@@ -9,7 +9,7 @@ const STEPS = [
   { msg: "vibe certified. welcome to the good side." },
 ]
 
-const TOTAL_MS = 800 + STEPS.length * 1300 + 900 // keep step reveal + progress bar in sync
+const TOTAL_MS = 800 + STEPS.length * 1300 + 900 
 
 interface Props { name: string; onDone: () => void }
 
@@ -22,7 +22,7 @@ export default function VibeCheck({ name, onDone }: Props) {
   const [exiting, setExiting] = useState(false)
   const typeTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  // types out one step's message character by character, then reveals the next step
+  
   function typeStep(i: number) {
     if (i >= STEPS.length) return
     setCurrent(i + 1)
@@ -202,7 +202,7 @@ export default function VibeCheck({ name, onDone }: Props) {
         />
 
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
-          {STEPS.map((step, i) => {
+          {STEPS.map((_, i) => {
             const done    = current > i + 1
             const active  = current === i + 1
             const pending = current <= i
