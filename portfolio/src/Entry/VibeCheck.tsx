@@ -9,7 +9,7 @@ const STEPS = [
   { msg: "vibe certified. welcome to the good side." },
 ]
 
-const TOTAL_MS = 800 + STEPS.length * 1300 + 900 
+const TOTAL_MS = 800 + STEPS.length * 1300 + 900
 
 interface Props { name: string; onDone: () => void }
 
@@ -22,7 +22,7 @@ export default function VibeCheck({ name, onDone }: Props) {
   const [exiting, setExiting] = useState(false)
   const typeTimers = useRef<ReturnType<typeof setTimeout>[]>([])
 
-  
+
   function typeStep(i: number) {
     if (i >= STEPS.length) return
     setCurrent(i + 1)
@@ -110,6 +110,7 @@ export default function VibeCheck({ name, onDone }: Props) {
       )}
 
       <motion.div
+        layout
         className="relative z-10 w-full"
         initial={{ opacity: 0, scale: 0.92, y: 16 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -126,7 +127,7 @@ export default function VibeCheck({ name, onDone }: Props) {
           overflow: "hidden",
         }}
       >
-        {/* scanning laser sweep, only while actively scanning */}
+
         {!hired && (
           <div
             className="absolute left-0 right-0 pointer-events-none"
@@ -203,11 +204,12 @@ export default function VibeCheck({ name, onDone }: Props) {
 
         <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
           {STEPS.map((_, i) => {
-            const done    = current > i + 1
-            const active  = current === i + 1
+            const done = current > i + 1
+            const active = current === i + 1
             const pending = current <= i
             return (
-              <div
+              <motion.div
+                layout
                 key={i}
                 style={{
                   display: "flex",
@@ -240,7 +242,7 @@ export default function VibeCheck({ name, onDone }: Props) {
                 >
                   {active || done ? typed[i] : ""}
                 </span>
-              </div>
+              </motion.div>
             )
           })}
         </div>
