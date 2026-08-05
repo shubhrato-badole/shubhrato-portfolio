@@ -53,3 +53,12 @@ body {
   100% { transform: translate(-50%, -50%) scale(9); opacity: 0; }
 }
 
+html, body, #root {
+  background: #04010f;
+  margin: 0;
+}
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
