@@ -28,20 +28,20 @@ export default function ChatWidget() {
   const [input, setInput] = useState('')
   const nudgeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [isTyping, setIsTyping] = useState(false)
 
-  // auto-scroll to the latest message whenever the message list changes
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // nudge popups: stop showing once the visitor has seen every combo once this session
+
   useEffect(() => {
     if (open) return
 
     const showNudge = () => {
       const shownCount = parseInt(sessionStorage.getItem('nudgeShownCount') || '0', 10)
-      if (shownCount >= combos.length) return // seen them all this session, stop nudging
-
+      if (shownCount >= combos.length) return
       sessionStorage.setItem('nudgeShownCount', String(shownCount + 1))
 
       const combo = getNextCombo()
@@ -55,11 +55,11 @@ export default function ChatWidget() {
 
       setTimeout(() => {
         setNudgeLines([])
-      }, combo.length * 1900 + 8500)
+      }, combo.length * 1900 + 9000)
     }
 
-    const firstTimer = setTimeout(showNudge, 10000)
-    const interval = setInterval(showNudge, 30000)
+    const firstTimer = setTimeout(showNudge, 13000)
+    const interval = setInterval(showNudge, 35000)
 
     return () => {
       clearTimeout(firstTimer)
@@ -78,8 +78,8 @@ export default function ChatWidget() {
     const updatedMessages = [...messages, { from: 'user' as const, text: input }]
     setMessages(updatedMessages)
     setInput('')
+    setIsTyping(true)
     try {
-      // skip the hardcoded greeting at index 0 — Gemini's history must start with a user turn
       const historyForApi = updatedMessages.slice(1)
       const res = await fetch('/api/chat', {
         method: 'POST',
@@ -90,12 +90,14 @@ export default function ChatWidget() {
       setMessages((prev) => [...prev, { from: 'bot', text: data.reply }])
     } catch {
       setMessages((prev) => [...prev, { from: 'bot', text: "connection hiccup — try again?" }])
+    } finally {
+      setIsTyping(false)
     }
   }
 
   return (
     <div style={{ position: 'fixed', bottom: 16, right: 16, zIndex: 100 }}>
-      {/* nudge bubbles */}
+
       <AnimatePresence>
         {!open && nudgeLines.length > 0 && (
           <div style={{
@@ -188,7 +190,29 @@ export default function ChatWidget() {
                   {m.text}
                 </div>
               ))}
-              {/* invisible anchor scrolled into view on every new message */}
+              {isTyping && (
+                <div style={{
+                  alignSelf: 'flex-start',
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '12px 12px 12px 2px',
+                  padding: '10px 14px',
+                  display: 'flex',
+                  gap: 4,
+                }}>
+                  {[0, 1, 2].map((i) => (
+                    <span
+                      key={i}
+                      style={{
+                        width: 6, height: 6, borderRadius: '50%',
+                        background: '#8B5CF6',
+                        animation: 'typingBounce 1.2s ease-in-out infinite',
+                        animationDelay: `${i * 0.15}s`,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
               <div ref={messagesEndRef} />
             </div>
 
@@ -227,7 +251,7 @@ export default function ChatWidget() {
         )}
       </AnimatePresence>
 
-      {/* launcher */}
+
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <button
           onClick={() => (open ? setOpen(false) : handleOpen())}
